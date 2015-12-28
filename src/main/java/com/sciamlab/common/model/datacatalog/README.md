@@ -1,0 +1,3 @@
+The dcat folder contains classes to model the [DCAT standard](http://www.w3.org/TR/vocab-dcat/).
+
+To work is in progress, more info to come...
