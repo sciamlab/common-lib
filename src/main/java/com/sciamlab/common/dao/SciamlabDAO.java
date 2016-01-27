@@ -57,6 +57,7 @@ public abstract class SciamlabDAO {
 			logger.debug(statement);
 			statement.execute();
 			result = statement.getResultSet();
+			logger.debug("done");
 			
 			ResultSetMetaData metadata = result.getMetaData();
 			
@@ -170,7 +171,7 @@ public abstract class SciamlabDAO {
 			logger.debug(statement);
 			statement.execute();
 			result = statement.getResultSet();
-			
+			logger.debug("done");
 			ResultSetMetaData metadata = result.getMetaData();
 			
 			List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
@@ -211,6 +212,7 @@ public abstract class SciamlabDAO {
 			logger.debug(statement);
 			statement.execute();
 			int count = statement.getUpdateCount();
+			logger.debug("done: "+count);
 //			if (count == 0)
 //	            throw new DAOException("SQL update failed, no rows affected.");
 			return count;
@@ -234,6 +236,7 @@ public abstract class SciamlabDAO {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
+			logger.debug("begin transaction");
 			connection = this.getConnection();
 			connection.setAutoCommit(false);
 			int count = 0;
@@ -245,9 +248,12 @@ public abstract class SciamlabDAO {
 						statement.setObject(i, params.get(i - 1));
 				logger.debug(statement);
 				statement.execute();
-				count += statement.getUpdateCount();
+				int tmp = statement.getUpdateCount();
+				count += tmp;
+				logger.debug("done: "+tmp);
 			}
 			connection.commit();
+			logger.debug("commit");
 			return count;
 			
 		} catch (DAOException e) {

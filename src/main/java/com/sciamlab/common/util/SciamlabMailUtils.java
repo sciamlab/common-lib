@@ -302,7 +302,7 @@ public class SciamlabMailUtils {
 	        ve.init();
 			for(int i=0 ; i<iterations ; i++){
 				StringWriter swOut = new StringWriter();
-		        ve.evaluate(getContext(props), swOut, SciamlabVelocityHelper.class.getSimpleName(), template);
+		        ve.evaluate(getContext(props), swOut, "SciamlabVelocityHelper", template);
 		        template = swOut.toString();
 			}
 			return template;

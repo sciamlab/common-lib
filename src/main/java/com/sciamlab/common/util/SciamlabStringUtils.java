@@ -7,8 +7,11 @@ import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -202,11 +205,15 @@ public class SciamlabStringUtils {
     
     public static String getRandomString(int length){
     	if (length < 1)
-    	      throw new IllegalArgumentException("length < 1: " + length);
+    		throw new IllegalArgumentException("length < 1: " + length);
     	char[] buf = new char[length];
     	for (int idx = 0; idx < buf.length; ++idx) 
     		buf[idx] = symbols[random.nextInt(symbols.length)];
     	return new String(buf);
+    }
+
+    public static int getRandomNumber(int min, int max){
+    	return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
     
     /**
@@ -388,5 +395,23 @@ public class SciamlabStringUtils {
 	      // actually has the most recent cost counts
 	      return p[n];
 	  }
+	  
+	  public static String removeDuplicates(String string){
+
+		  char[] chars = string.toCharArray();
+		  Set<Character> charSet = new LinkedHashSet<Character>();
+		  for (char c : chars) {
+		      charSet.add(c);
+		  }
+
+		  StringBuilder sb = new StringBuilder();
+		  for (Character character : charSet) {
+		      sb.append(character);
+		  }
+		  return sb.toString();
+	  }
 	
+	  public static void main(String[] args) {
+		System.out.println(removeDuplicates("-----"));
+	}
 }

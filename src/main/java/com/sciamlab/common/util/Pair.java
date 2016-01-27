@@ -1,5 +1,6 @@
 package com.sciamlab.common.util;
 
+@Deprecated
 public class Pair<A, B> {
     private A first;
     private B second;
