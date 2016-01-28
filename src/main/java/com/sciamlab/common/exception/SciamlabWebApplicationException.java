@@ -14,7 +14,7 @@ import com.sciamlab.common.util.SciamlabErrorResponse;
  *
  */
 
-public abstract class SciamlabWebApplicationException extends WebApplicationException {
+public class SciamlabWebApplicationException extends WebApplicationException {
 
 	private static final long serialVersionUID = 5522352446289929881L;
 	private final int status;

@@ -37,8 +37,7 @@ import org.glassfish.jersey.internal.util.collection.MultivaluedStringMap;
 
 public class SciamlabMailUtils {
 
-	private static final Logger logger = Logger
-			.getLogger(SciamlabMailUtils.class);
+	private static final Logger logger = Logger.getLogger(SciamlabMailUtils.class);
 
 	public static class GMail extends Mail {
 
