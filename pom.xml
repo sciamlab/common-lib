@@ -1,29 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>sciamlab</groupId>
-  <artifactId>common-lib</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>sciamlab</groupId>
+	<artifactId>common-lib</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<name>SciamLab Common Library</name>
 
 	<scm>
-	   <connection>scm:svn:http://dev.sciamlab.com/svn/repo/main/${project.groupId}/${project.artifactId}/trunk</connection>
-	   <developerConnection>scm:svn:http://dev.sciamlab.com/svn/repo/main/${project.groupId}/${project.artifactId}/trunk</developerConnection>
-	</scm> 
-	
+		<connection>scm:svn:http://dev.sciamlab.com/svn/repo/main/${project.groupId}/${project.artifactId}/trunk</connection>
+		<developerConnection>scm:svn:http://dev.sciamlab.com/svn/repo/main/${project.groupId}/${project.artifactId}/trunk</developerConnection>
+	</scm>
+
 	<distributionManagement>
 		<repository>
 			<id>releases</id>
-			<url>http://dev.sciamlab.com:8081/nexus/content/repositories/releases</url>
+			<url>http://dev.sciamlab.com/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
-			<url>http://dev.sciamlab.com:8081/nexus/content/repositories/snapshots</url>
+			<url>http://dev.sciamlab.com/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>2.7</jersey.version>
@@ -47,7 +48,7 @@
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
@@ -87,9 +88,9 @@
 			<version>1.9</version>
 		</dependency>
 		<dependency>
-		  <groupId>org.apache.commons</groupId>
-		  <artifactId>commons-lang3</artifactId>
-		  <version>3.4</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -113,14 +114,19 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.activation</groupId> -->
-<!-- 			<artifactId>activation</artifactId> -->
-<!-- 			<version>1.1.1</version> -->
-<!-- 		</dependency> -->
-				
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
+
 	</dependencies>
-	
+
 	<build>
 
 		<plugins>
