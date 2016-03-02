@@ -78,6 +78,7 @@ public enum OpenDataFormat {
 	WEBGIS("WEBGIS"),
 	IMAGE("IMAGE"),
 	ODATA_XML("ODATA-XML"),
+	ATOM("ATOM"),
 	OTHER("OTHER");
 	
 	private String id;

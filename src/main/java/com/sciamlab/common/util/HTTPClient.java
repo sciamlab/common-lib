@@ -1,14 +1,10 @@
 package com.sciamlab.common.util;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -18,9 +14,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 /**
  * 
@@ -29,8 +27,6 @@ import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
  */
 
 public class HTTPClient {
-	
-	private static Map<URL, Integer> urlCacheStatus = new HashMap<URL, Integer>(); 
 	
 	private Client c;
 	
@@ -43,22 +39,28 @@ public class HTTPClient {
 		this.c.register(feature);    
 	}
 
+//	private static Map<URL, Integer> urlCacheStatus = new HashMap<URL, Integer>(); 
+	private static Cache<URL, Integer> urlCacheStatus = CacheBuilder.newBuilder().maximumSize(10000).build();
+//	private synchronized boolean checkAndUpdateCache(String url){
+//		if(URLS_CACHE.getIfPresent(url)!=null)
+//			return false;
+//		URLS_CACHE.put(url, url);
+//		return true;
+//	}
+	
 	public Response.Status getURLResponseStatus(URL url) {
-		int testRes;
+		Integer cached = urlCacheStatus.getIfPresent(url);
+		if (cached!=null)
+			return Response.Status.fromStatusCode(cached);
 		
-		if (urlCacheStatus.containsKey(url)) { 
-			testRes = urlCacheStatus.get(url);
-		} else {
-			Response r = this.doHEAD(url);
-			testRes = r.getStatus();
-			urlCacheStatus.put(url, r.getStatus());
-		}
-		Response.Status status = Response.Status.fromStatusCode(testRes);
-		return status;
+		Response r = this.doHEAD(url);
+		urlCacheStatus.put(url, r.getStatus());
+		return Response.Status.fromStatusCode(r.getStatus());
 	}
 	
 	public boolean isOK(URL url){
-		return this.is(new ArrayList<Response.Status>(){{add(Response.Status.OK);add(Response.Status.SEE_OTHER);add(Response.Status.MOVED_PERMANENTLY);}}, url);
+//		return this.is(new ArrayList<Response.Status>(){{add(Response.Status.OK);add(Response.Status.SEE_OTHER);add(Response.Status.MOVED_PERMANENTLY);}}, url);
+		return getURLResponseStatus(url).getStatusCode()<400;
 	}
 	
 	public boolean is(final Response.Status status, URL url){

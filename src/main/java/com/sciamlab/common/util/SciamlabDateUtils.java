@@ -22,6 +22,7 @@ public class SciamlabDateUtils {
 
 	public static Date parseStringDate(String str_date, Locale locale){
 		List<SimpleDateFormat> knownPatterns = new ArrayList<SimpleDateFormat>();
+		knownPatterns.add(new SimpleDateFormat("dd/MMM/yyyy",locale));
 		knownPatterns.add(new SimpleDateFormat("dd MMMMM yyyy",locale));
 		knownPatterns.add(new SimpleDateFormat("ddMMMMM yyyy",locale));
 		knownPatterns.add(new SimpleDateFormat("dMMMMM yyyy",locale));
