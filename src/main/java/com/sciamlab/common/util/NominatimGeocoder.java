@@ -67,7 +67,7 @@ public class NominatimGeocoder implements Geocoder{
 			}
 		}
 		
-		public NominatimGeocoderBuilder (URL url, Collection<String> countrycodes, String format){
+		private NominatimGeocoderBuilder (URL url, Collection<String> countrycodes, String format){
 			this.url = url;
 			this.format = format;
 			this.countrycodes = countrycodes;

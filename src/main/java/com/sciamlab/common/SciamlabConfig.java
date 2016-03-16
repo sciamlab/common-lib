@@ -12,5 +12,9 @@ public class SciamlabConfig {
 	public static String getProperty(String key){
 		return PROPERTIES.getProperty(key);
 	}
+	public static Properties setProperty(String key, String value){
+		PROPERTIES.setProperty(key, value);
+		return PROPERTIES;
+	}
 	
 }
