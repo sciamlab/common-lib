@@ -1,5 +1,6 @@
 package com.sciamlab.common.model.datacatalog;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,22 +16,38 @@ public enum OpenDataCategory {
 	 * refer to : https://joinup.ec.europa.eu/node/139531
 	 */
 
-	AGRICULTURE_FISHERIES_FORESTRY_FOOD("AGRICULTURE-FISHERIES-FORESTRY-FOOD"),
-	EDUCATION_CULTURE_AND_SPORT("EDUCATION-CULTURE-AND-SPORT"),
-	ENVIRONMENT("ENVIRONMENT"),
-	ENERGY("ENERGY"),
-	TRANSPORT("TRANSPORT"),
-	SCIENCE_AND_TECHNOLOGY("SCIENCE-AND-TECHNOLOGY"),
-	ECONOMY_AND_FINANCE("ECONOMY-AND-FINANCE"),
-	POPULATION_AND_SOCIAL_CONDITIONS("POPULATION-AND-SOCIAL-CONDITIONS"),
-	HEALTH("HEALTH"),
-	GOVERNMENT_PUBLIC_SECTOR("GOVERNMENT-PUBLIC-SECTOR"),
-	REGIONS_CITIES("REGIONS-CITIES"),
-	JUSTICE_LEGAL_SYSTEM_PUBLIC_SAFETY("JUSTICE-LEGAL-SYSTEM-PUBLIC-SAFETY"),
-	INTERNATIONAL_ISSUES("INTERNATIONAL-ISSUES");
+//	AGRICULTURE_FISHERIES_FORESTRY_FOOD("AGRICULTURE-FISHERIES-FORESTRY-FOOD"),
+//	EDUCATION_CULTURE_AND_SPORT("EDUCATION-CULTURE-AND-SPORT"),
+//	ENVIRONMENT("ENVIRONMENT"),
+//	ENERGY("ENERGY"),
+//	TRANSPORT("TRANSPORT"),
+//	SCIENCE_AND_TECHNOLOGY("SCIENCE-AND-TECHNOLOGY"),
+//	ECONOMY_AND_FINANCE("ECONOMY-AND-FINANCE"),
+//	POPULATION_AND_SOCIAL_CONDITIONS("POPULATION-AND-SOCIAL-CONDITIONS"),
+//	HEALTH("HEALTH"),
+//	GOVERNMENT_PUBLIC_SECTOR("GOVERNMENT-PUBLIC-SECTOR"),
+//	REGIONS_CITIES("REGIONS-CITIES"),
+//	JUSTICE_LEGAL_SYSTEM_PUBLIC_SAFETY("JUSTICE-LEGAL-SYSTEM-PUBLIC-SAFETY"),
+//	INTERNATIONAL_ISSUES("INTERNATIONAL-ISSUES");
+	
+	AGRICULTURE_FISHERIES_FORESTRY_FOOD("AGRI"),
+	ECONOMY_AND_FINANCE("ECON"),
+	EDUCATION_CULTURE_AND_SPORT("EDUC"),
+	ENERGY("ENER"),
+	ENVIRONMENT("ENVI"),
+	GOVERNMENT_PUBLIC_SECTOR("GOVE"),
+	HEALTH("HEAL"),
+	INTERNATIONAL_ISSUES("INTR"),
+	JUSTICE_LEGAL_SYSTEM_PUBLIC_SAFETY("JUST"),
+	REGIONS_CITIES("REGI"),
+	POPULATION_AND_SOCIAL_CONDITIONS("SOCI"),
+	SCIENCE_AND_TECHNOLOGY("TECH"),
+	TRANSPORT("TRAN");
 	
 	private String id;
 	private String name;
+	private String name_en;
+	private URI uri;
 	private Set<String> alias = new HashSet<String>();
 	
 	public static Map<String, OpenDataCategory> byId = new TreeMap<String, OpenDataCategory>();
@@ -47,6 +64,16 @@ public enum OpenDataCategory {
 	public String namee() { return name; }
 	public OpenDataCategory namee(String name) { 
 		this.name = name;
+		return this;
+	}
+	public String name_en() { return name_en; }
+	public OpenDataCategory name_en(String name_en) { 
+		this.name_en = name_en;
+		return this;
+	}
+	public URI uri() { return uri; }
+	public OpenDataCategory uri(URI uri) { 
+		this.uri = uri;
 		return this;
 	}
 	public Set<String> alias() { return alias; }
