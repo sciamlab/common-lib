@@ -36,7 +36,7 @@ public enum OpenDataFrequency {
 
 	private String id;
 	private URI uri;
-	private String qualified_name;
+//	private String qualified_name;
 	private String name;
 	private String definition;
 	private Set<String> alias = new HashSet<String>();;
@@ -57,11 +57,11 @@ public enum OpenDataFrequency {
 		this.uri = uri; 
 		return this;
 	}
-	public String qualifiedName() { return qualified_name; }
-	public OpenDataFrequency qualifiedName(String qualified_name) { 
-		this.qualified_name = qualified_name; 
-		return this;
-	}
+//	public String qualifiedName() { return qualified_name; }
+//	public OpenDataFrequency qualifiedName(String qualified_name) { 
+//		this.qualified_name = qualified_name; 
+//		return this;
+//	}
 	public String namee() { return name; }
 	public OpenDataFrequency namee(String name) { 
 		this.name = name; 
@@ -103,7 +103,7 @@ public enum OpenDataFrequency {
     	JSONObject json = new JSONObject();
     	json.put("id", this.id);
     	json.put("uri", this.uri);
-    	json.put("qualified_name", this.qualified_name);
+//    	json.put("qualified_name", this.qualified_name);
     	json.put("name", this.name);
     	json.put("definition", this.definition);
     	json.put("alias", new JSONArray().put(alias));

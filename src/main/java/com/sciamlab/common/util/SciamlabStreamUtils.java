@@ -25,8 +25,9 @@ public class SciamlabStreamUtils {
 	
 	private static final Logger logger = Logger.getLogger(SciamlabStreamUtils.class);
 	
-	@SuppressWarnings("parentResource")
 	public static InputStream getInputStream(String file) throws FileNotFoundException{
+		if(file==null)
+			throw new FileNotFoundException("input file null!");
 		InputStream is = null;
 		StringBuffer log = new StringBuffer();
 		try{
@@ -121,7 +122,7 @@ public class SciamlabStreamUtils {
 	    return s.hasNext() ? s.next() : "";
 	}
 	
-	public static InputStream getRemoteInputStream(String uri) throws Exception{
+	public static InputStream getRemoteInputStream(String uri) throws IOException {
 		URL url = new URL(uri);
         URLConnection urlConn = url.openConnection();
         return urlConn.getInputStream();

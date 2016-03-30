@@ -2,50 +2,70 @@ package com.sciamlab.common.model.mdr;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONString;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-public class EUNamedAuthorityEntry implements JSONString{
-	
-	public final String BASE_URI = "http://publications.europa.eu/resource/authority/";
+import com.sciamlab.common.exception.SciamlabException;
+import com.sciamlab.common.util.SciamlabCollectionUtils;
+import com.sciamlab.common.util.SciamlabDateUtils;
+
+public class EUNamedAuthorityEntry implements JSONString {
 
 	public final String authority_code;
-	public final EUNamedAutorityVocabulary vocabulary;
+	public final EUNamedAuthorityVocabulary vocabulary;
 	public final URI uri;
-	public final URI sameAs;
-	public final URI exactMatch;
-	public final String description;
-	public final String version;
-	public final Map<Locale, String> labels;
-	
-	private EUNamedAuthorityEntry(EUNamedAutorityVocabulary vocabulary, String authority_code, URI sameAs, URI exactMatch
-			, String description, String version, Map<Locale, String> labels) throws URISyntaxException {
-		super();
-		this.authority_code = authority_code;
-		this.vocabulary = vocabulary;
-		this.sameAs = sameAs;
-		this.exactMatch = exactMatch;
-		this.uri = new URI(BASE_URI+vocabulary.id()+"/"+authority_code);
-		this.description = description;
-		this.version = version;
-		this.labels = labels;
+	public final Date start_use;
+	public final Map<String, String> labels;
+	public final Set<String> alias = new HashSet<String>();
+
+	public EUNamedAuthorityEntry setAlias(String alias) {
+		this.alias.add(alias.toLowerCase().trim());
+		vocabulary.setAlias(this, alias);
+		return this;
 	}
 
-	@Override
-	public String toJSONString(){
-		return new JSONObject().put("authority_code", authority_code)
-				.put("uri", uri.toString())
-				.put("sameAs", sameAs!=null ? sameAs : JSONObject.NULL)
-				.put("exactMatch", exactMatch!=null ? exactMatch : JSONObject.NULL)
-				.put("description", description!=null ? description : JSONObject.NULL)
-				.put("version", version!=null ? version : JSONObject.NULL)
-				.put("labels", new JSONObject(labels)).toString();
+	public EUNamedAuthorityEntry setAliases(Collection<String> aliases) {
+		for (String a : aliases)
+			this.setAlias(a);
+		return this;
+	}
+
+	protected EUNamedAuthorityEntry(EUNamedAuthorityVocabulary vocabulary, String authority_code, Date start_use, Map<String, String> labels) throws URISyntaxException {
+		super();
+		this.vocabulary = vocabulary;
+		this.authority_code = authority_code;
+		this.setAlias(authority_code);
+		this.uri = new URI(vocabulary.uri() + "/" + authority_code);
+		this.start_use = start_use;
+		this.labels = labels;
+		this.setAliases(labels.values());
 	}
 	
+	@Override
+	public String toJSONString() {
+		return new JSONObject().put("authority_code", authority_code)
+				.put("uri", uri.toString())
+				.put("start-use", SciamlabDateUtils.getDateAsIso8061String(start_use))
+				.put("labels", new JSONObject(labels))
+				.put("alias", new JSONArray(alias)).toString();
+	}
+
 	@Override
 	public String toString() {
 		return toJSONString();
@@ -76,44 +96,51 @@ public class EUNamedAuthorityEntry implements JSONString{
 		return true;
 	}
 
-	public static class Builder{
-		private String authority_code;
-		private EUNamedAutorityVocabulary vocabulary;
-		private URI sameAs;
-		private URI exactMatch;
-		private String description;
-		private String version;
-		private Map<Locale, String> labels = new HashMap<Locale, String>();
-		
-		public Builder(EUNamedAutorityVocabulary vocabulary, String authority_code){
+	public static class Builder {
+		protected String authority_code;
+		protected EUNamedAuthorityVocabulary vocabulary;
+		protected Date start_use;
+		protected Map<String, String> labels = new HashMap<String, String>();
+
+		public Builder(EUNamedAuthorityVocabulary vocabulary, String authority_code) {
 			this.authority_code = authority_code;
 			this.vocabulary = vocabulary;
 		}
 		
-		public Builder sameAs(URI sameAs){
-			this.sameAs = sameAs;
+		public Builder(EUNamedAuthorityVocabulary vocabulary, Element record) throws SciamlabException {
+			this.authority_code = record.getElementsByTagName("authority-code").item(0).getFirstChild().getNodeValue();
+			this.vocabulary = vocabulary;
+			try {
+				this.start_use = new SimpleDateFormat("yyyy-MM-dd").parse(record.getElementsByTagName("start.use").item(0).getFirstChild().getNodeValue());
+			} catch (DOMException | ParseException e) {
+				throw new SciamlabException(e);
+			}
+			NodeList nl = ((Element)record.getElementsByTagName("label").item(0)).getElementsByTagName("lg.version");
+			if (nl != null && nl.getLength() > 0) {
+		        for (int i = 0; i < nl.getLength(); i++) {
+		            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+		                Element el = (Element) nl.item(i);
+		                String lang = el.getAttribute("lg");
+		                if(!labels.containsKey(lang))
+		                	labels.put(lang, el.getTextContent());
+		            }
+		        }
+		    }
+		}
+
+		public Builder start_use(Date start_use) {
+			this.start_use = start_use;
 			return this;
 		}
-		public Builder exactMatch(URI exactMatch){
-			this.exactMatch = exactMatch;
-			return this;
-		}
-		public Builder description(String description){
-			this.description = description;
-			return this;
-		}
-		public Builder version(String version){
-			this.version = version;
-			return this;
-		}
-		public Builder label(Locale lang, String label){
+
+		public Builder label(String lang, String label) {
 			this.labels.put(lang, label);
 			return this;
 		}
-		
-		public EUNamedAuthorityEntry build() throws URISyntaxException{
-			return new EUNamedAuthorityEntry(vocabulary, authority_code, sameAs, exactMatch, description, version, labels);
+
+		public EUNamedAuthorityEntry build() throws URISyntaxException {
+			return new EUNamedAuthorityEntry(vocabulary, authority_code, start_use, labels);
 		}
 	}
-	
+
 }

@@ -11,78 +11,121 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sciamlab.common.exception.OpenDataFormatException;
+import com.sciamlab.common.model.mdr.EUNamedAuthorityVocabulary;
+import com.sciamlab.common.model.mdr.vocabulary.EUNamedAuthorityFileType;
 
 public enum OpenDataFormat {
 	
-	JPG("JPG"),
-	TURTLE("TURTLE"),
-	N_TRIPLE("N-TRIPLE"),
-	SPARQL("SPARQL"),
+//	JPG("JPG"),
+//	TURTLE("TURTLE"),
+//	N_TRIPLE("N-TRIPLE"),
+//	SPARQL("SPARQL"),
+//	OWL("OWL"),
+//	RDF("RDF"),
+//	PDF("PDF"),
+//	HTML("HTML"),
+//	XML("XML"),
+//	ZIP_XML("ZIP:XML"),
+//	PLAIN("PLAIN"),
+//	CSW("CSW"),
+//	XSD("XSD"),
+//	XLS("XLS"),
+//	ZIP_XLS("ZIP:XLS"),
+//	CSV("CSV"),
+//	TSV("TSV"),
+//	ZIP_CSV("ZIP:CSV"),
+//	SHP("SHP"),
+//	ZIP_SHP("ZIP:SHP"),
+//	KML("KML"),
+//	KMZ("KMZ"),
+//	ODC("ODC"),
+//	GTFS("GTFS"),
+//	DBF("DBF"),
+//	SHX("SHX"),
+//	GEOJSON("GEOJSON"),
+//	JSON("JSON"),
+//	JSON_LD("JSON-LD"),
+//	MXD("MXD"),
+//	ZIP("ZIP"),
+//	TXT("TXT"),
+//	ZIP_TXT("ZIP:TXT"),
+//	DXF("DXF-DWG"),
+//	ARCEXPLORER("ARCEXPLORER"),
+//	ZIP_ODS("ZIP:ODS"),
+//	ZIP_RDF("ZIP:RDF"),
+//	ODS("ODS"),
+//	ODT("ODT"),
+//	TIFF("TIFF"),
+//	PNG("PNG"),
+//	BLENDER("BLENDER"),
+//	GRID_ESRI("GRID-ESRI"),
+//	ZIP_GRID("ZIP:GRID"),
+//	WCS("WCS"),
+//	WCF("WCF"),
+//	WFS("WFS"),
+//	WMS("WMS"),
+//	DOC("DOC"),
+//	GML("GML"),
+//	MDB("MDB"),
+//	ZIP_GPX("ZIP:GPX"),
+//	GPX("GPX"),
+//	SBN("SBN"),
+//	OAI_PMH("OAI-PMH"),
+//	ECW("ECW"),
+//	ICAL("ICAL"),
+//	TTL("TTL"),
+//	SBX("SBX"),
+//	RTF("RTF"),
+//	LZMA("LZMA"),
+//	WEBGIS("WEBGIS"),
+//	IMAGE("IMAGE"),
+//	ODATA_XML("ODATA-XML"),
+//	ATOM("ATOM"),
+//	OTHER("OTHER");
+	
+	JPEG("JPEG"),
+	RDF_TURTLE("RDF_TURTLE"),
+	RDF_N_TRIPLES("RDF_N_TRIPLES"),
+	SPARQLQ("SPARQLQ"),
 	OWL("OWL"),
 	RDF("RDF"),
 	PDF("PDF"),
 	HTML("HTML"),
 	XML("XML"),
-	ZIP_XML("ZIP:XML"),
-	PLAIN("PLAIN"),
-	CSW("CSW"),
-	XSD("XSD"),
+	TXT("TXT"),
+	SCHEMA_XML("SCHEMA_XML"),
 	XLS("XLS"),
-	ZIP_XLS("ZIP:XLS"),
 	CSV("CSV"),
 	TSV("TSV"),
-	ZIP_CSV("ZIP:CSV"),
 	SHP("SHP"),
-	ZIP_SHP("ZIP:SHP"),
+	GRID_ASCII("GRID_ASCII"),
 	KML("KML"),
 	KMZ("KMZ"),
 	ODC("ODC"),
-	GTFS("GTFS"),
 	DBF("DBF"),
-	SHX("SHX"),
-	GEOJSON("GEOJSON"),
 	JSON("JSON"),
 	JSON_LD("JSON-LD"),
 	MXD("MXD"),
 	ZIP("ZIP"),
-	TXT("TXT"),
-	ZIP_TXT("ZIP:TXT"),
-	DXF("DXF-DWG"),
-	ARCEXPLORER("ARCEXPLORER"),
-	ZIP_ODS("ZIP:ODS"),
-	ZIP_RDF("ZIP:RDF"),
+	MAP_PRVW("MAP_PRVW"),
 	ODS("ODS"),
 	ODT("ODT"),
 	TIFF("TIFF"),
 	PNG("PNG"),
-	BLENDER("BLENDER"),
-	GRID_ESRI("GRID-ESRI"),
-	ZIP_GRID("ZIP:GRID"),
-	WCS("WCS"),
-	WCF("WCF"),
-	WFS("WFS"),
-	WMS("WMS"),
 	DOC("DOC"),
 	GML("GML"),
 	MDB("MDB"),
-	ZIP_GPX("ZIP:GPX"),
-	GPX("GPX"),
-	SBN("SBN"),
-	OAI_PMH("OAI-PMH"),
 	ECW("ECW"),
-	ICAL("ICAL"),
-	TTL("TTL"),
-	SBX("SBX"),
 	RTF("RTF"),
-	LZMA("LZMA"),
-	WEBGIS("WEBGIS"),
-	IMAGE("IMAGE"),
-	ODATA_XML("ODATA-XML"),
 	ATOM("ATOM"),
-	OTHER("OTHER");
+	
+	WCS("WCS"),
+	WFS("WFS"),
+	WMS("WMS");
 	
 	private String id;
 	private Set<String> alias = new HashSet<String>();;
+	private EUNamedAuthorityFileType euNamedAuthorityFileType = null;
 	
 	public static Map<String, OpenDataFormat> byId = new TreeMap<String, OpenDataFormat>();
 	private static Map<String, OpenDataFormat> byAlias = new TreeMap<String, OpenDataFormat>();
@@ -92,9 +135,12 @@ public enum OpenDataFormat {
 	
 	private OpenDataFormat(String id){
 		this.id = id;
+		if(EUNamedAuthorityVocabulary.FILE_TYPE.entryMap.containsKey(id))
+			this.euNamedAuthorityFileType = (EUNamedAuthorityFileType) EUNamedAuthorityVocabulary.FILE_TYPE.entryMap.get(id); 
 	}
 	
 	public String id() { return id; }
+	public EUNamedAuthorityFileType euNamedAuthorityFileType() { return euNamedAuthorityFileType; }
 	public Set<String> alias() { return alias; }
 	public Set<String> alias(String alias){
 		byAlias.put(alias, this);
@@ -125,24 +171,5 @@ public enum OpenDataFormat {
     	json.put("alias", new JSONArray().put(alias));
     	return json.toString();
     }
-    
-    @Deprecated
-    public static Set<OpenDataFormat> toOpenDataFormats(List<String> formats) throws OpenDataFormatException{
-    	Set<OpenDataFormat> list = new HashSet<OpenDataFormat>();
-    	for(String f : formats){
-    		list.add(toOpenDataFormat(f));
-    	}
-    	return list;
-    }
-    
-    @Deprecated
-    public static OpenDataFormat toOpenDataFormat(String f) throws OpenDataFormatException{
-		f = f.trim();
-		if(!byAlias.containsKey(f)) {
-			throw new OpenDataFormatException(f);
-		}
-		return OpenDataFormat.byAlias.get(f);
-    }
-    
     
 }

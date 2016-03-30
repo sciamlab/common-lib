@@ -1,4 +1,4 @@
-package com.sciamlab.common.exception;
+package com.sciamlab.common.exception.web;
 
 import javax.ws.rs.core.Response;
 

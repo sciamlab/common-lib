@@ -48,25 +48,6 @@ public class SciamlabDateUtils {
 		return new SimpleDateFormat(pattern).parse(str_date);
 	}
 
-	public static OpenDataFrequency parseAccrualPeriodicity(String str_periodivity, Locale locale) {
-		if (locale.getLanguage().equals("it")) {
-			if (str_periodivity.toLowerCase().contains("mensile")){
-				return OpenDataFrequency.MONTHLY;
-			} else if (str_periodivity.toLowerCase().contains("annuale") ||
-					str_periodivity.toLowerCase().contains("circa 1 volta all'anno") ){
-				return OpenDataFrequency.ANNUAL;
-			} else if (str_periodivity.toLowerCase().contains("settimanale")){
-				return OpenDataFrequency.WEEKLY;
-			} else if (str_periodivity.toLowerCase().contains("quotidiana")){
-				return OpenDataFrequency.DAILY;
-			} else if (str_periodivity.toLowerCase().contains("semestrale")){
-				return OpenDataFrequency.SEMIANNUAL;
-			}
-		}
-
-		return OpenDataFrequency.IRREGULAR;
-	}
-
 	public static Date getDateFromIso8061DateString(String dateString) {
 		try {
 			return ISO8061_FORMATTER.parse(dateString);

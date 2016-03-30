@@ -34,7 +34,7 @@ public class NominatimGeocoder implements Geocoder{
 	 * @throws IOException
 	 */
 	public synchronized JSONObject resolve(String query) throws MalformedURLException, IOException{
-		String result = new HTTPClient().doGET(new URL(url+"?format="+format+"&countrycodes="+countrycodes.toString().replace("[", "").replace("]", "").replaceAll(" ", "")
+		String result = new HTTPClient().doGET(new URL(url+"?format="+format+"&countrycodes="+countrycodes.toString().replace("[", "").replace("]", "").replace(" ", "")
 				+"&q="+URLEncoder.encode(query,"UTF-8"))).readEntity(String.class);
 		JSONArray array = new JSONArray(result);
 		return (array.length()>0)? (JSONObject)array.get(0) : null;

@@ -13,34 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sciamlab.common.exception;
+package com.sciamlab.common.exception.web;
 
 import javax.ws.rs.core.Response;
 
-import com.sciamlab.common.util.SciamlabStringUtils;
-
 /**
- * 
- * @author SciamLab
- *
+ * User: porter
+ * Date: 03/05/2012
+ * Time: 12:27
  */
+public class NotFoundException extends SciamlabWebApplicationException {
 
-public class InternalServerErrorException extends SciamlabWebApplicationException {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5212139422947303994L;
 
-	private static final long serialVersionUID = -7587680786259591935L;
-
-	private static final Response.Status status = Response.Status.INTERNAL_SERVER_ERROR;
+	private static final Response.Status status = Response.Status.NOT_FOUND;
 	
-	public InternalServerErrorException() {
-        this("");
+	public NotFoundException() {
+        this(null);
     }
 	
-	public InternalServerErrorException(Exception e) {
-        this(SciamlabStringUtils.stackTraceToString(e));
-    }
-	
-	public InternalServerErrorException(String applicationMessage) {
+	public NotFoundException(String applicationMessage) {
 		super(status.getStatusCode(), status.getStatusCode(), status.getReasonPhrase(), applicationMessage);
     }
-
 }

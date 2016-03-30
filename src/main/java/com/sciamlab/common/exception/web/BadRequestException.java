@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sciamlab.common.exception;
+package com.sciamlab.common.exception.web;
 
 import javax.ws.rs.core.Response;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -23,18 +25,17 @@ import javax.ws.rs.core.Response;
  *
  */
 
-public class ForbiddenException extends SciamlabWebApplicationException {
+public class BadRequestException extends SciamlabWebApplicationException {
 
-	private static final long serialVersionUID = -7587680786259591935L;
+	private static final long serialVersionUID = 5212139422947303994L;
+	private static final Logger logger = Logger.getLogger(BadRequestException.class);
+	private static final Response.Status status = Response.Status.BAD_REQUEST;
 
-	private static final Response.Status status = Response.Status.FORBIDDEN;
-	
-	public ForbiddenException() {
+	public BadRequestException() {
         this(null);
     }
 	
-	public ForbiddenException(String applicationMessage) {
+	public BadRequestException(String applicationMessage) {
 		super(status.getStatusCode(), status.getStatusCode(), status.getReasonPhrase(), applicationMessage);
     }
-
 }

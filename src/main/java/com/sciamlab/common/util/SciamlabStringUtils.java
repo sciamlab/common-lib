@@ -87,12 +87,12 @@ public class SciamlabStringUtils {
     public static String replaceStopWordsAddDashesAndLowerCase(String s){
     	if(s==null) return null;
     	s = replaceStopWords(s.toLowerCase());
-    	return s.replaceAll("   ", " ")
-    			.replaceAll("  ", " ")
-    			.replaceAll(" - ", "-")
-    			.replaceAll("' ", "'")
-				.replaceAll(" ", "-")
-				.replaceAll("'", "")
+    	return s.replace("   ", " ")
+    			.replace("  ", " ")
+    			.replace(" - ", "-")
+    			.replace("' ", "'")
+				.replace(" ", "-")
+				.replace("'", "")
 				.toLowerCase();
     }
     
@@ -184,7 +184,7 @@ public class SciamlabStringUtils {
 		String neww = orig;
 		for(String w : black_list.keySet()){
 			String r = black_list.get(w);
-			neww = neww.replaceAll(w, r);
+			neww = neww.replace(w, r);
 		}
 		return neww;
 	}

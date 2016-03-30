@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sciamlab.common.exception;
+package com.sciamlab.common.exception.web;
 
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import com.sciamlab.common.util.SciamlabStringUtils;
 
 /**
  * 
@@ -25,17 +25,22 @@ import org.apache.log4j.Logger;
  *
  */
 
-public class BadRequestException extends SciamlabWebApplicationException {
+public class InternalServerErrorException extends SciamlabWebApplicationException {
 
-	private static final long serialVersionUID = 5212139422947303994L;
-	private static final Logger logger = Logger.getLogger(BadRequestException.class);
-	private static final Response.Status status = Response.Status.BAD_REQUEST;
+	private static final long serialVersionUID = -7587680786259591935L;
 
-	public BadRequestException() {
-        this(null);
+	private static final Response.Status status = Response.Status.INTERNAL_SERVER_ERROR;
+	
+	public InternalServerErrorException() {
+        this("");
     }
 	
-	public BadRequestException(String applicationMessage) {
+	public InternalServerErrorException(Exception e) {
+        this(SciamlabStringUtils.stackTraceToString(e));
+    }
+	
+	public InternalServerErrorException(String applicationMessage) {
 		super(status.getStatusCode(), status.getStatusCode(), status.getReasonPhrase(), applicationMessage);
     }
+
 }
