@@ -14,6 +14,10 @@ import com.sciamlab.common.model.mdr.EUNamedAuthorityEntry;
 import com.sciamlab.common.model.mdr.EUNamedAuthorityVocabulary;
 
 public class EUNamedAuthorityDataTheme extends EUNamedAuthorityEntry {
+	
+	public enum Theme{
+		AGRI(),ECON(),EDUC(),ENER(),ENVI(),GOVE(),HEAL(),INTR(),JUST(),REGI(),SOCI(),TECH(),TRAN();
+	}
 
 	public final String description;
 	
