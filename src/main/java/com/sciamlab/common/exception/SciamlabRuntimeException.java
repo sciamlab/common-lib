@@ -11,4 +11,8 @@ public class SciamlabRuntimeException extends RuntimeException {
 	public SciamlabRuntimeException(Throwable t){
 		super(t);
 	}
+	
+	public SciamlabRuntimeException(String msg, Throwable t){
+		super(msg, t);
+	}
 }
