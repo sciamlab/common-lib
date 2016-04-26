@@ -67,7 +67,7 @@ public class SlackLogger{
 		if(text!=null)
 			json.put("text", text);
 		if(fallback!=null)
-			json.put("fallback", "Required text summary of the attachment that is shown by clients that understand attachments but choose not to show them.");
+			json.put("fallback", fallback);
 //		json.put("pretext", "Optional text that should appear above the formatted data");
 		if(color!=null)
 			json.put("color", color);
