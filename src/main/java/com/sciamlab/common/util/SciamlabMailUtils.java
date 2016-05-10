@@ -113,18 +113,41 @@ public class SciamlabMailUtils {
 			MultivaluedStringMap formData = new MultivaluedStringMap();
 			formData.add("from", from);
 			StringBuffer tos = new StringBuffer();
+			StringBuffer ccs = new StringBuffer();
+			StringBuffer bccs = new StringBuffer();
+			// to
 			boolean first = true;
 			for(Address r : msg.to){
-				if(first){
+				if(first)
 					first = false;
-				}else{
+				else
 					tos.append(",");
-				}
 				tos.append(r.toString());
-				
 			}
 			formData.add("to", tos.toString());
-			
+			// cc
+			first = true;
+			for(Address r : msg.cc){
+				if(first)
+					first = false;
+				else
+					ccs.append(",");
+				ccs.append(r.toString());
+			}
+			if(!msg.cc.isEmpty())
+				formData.add("cc", ccs.toString());
+			// bcc
+			first = true;
+			for(Address r : msg.bcc){
+				if(first)
+					first = false;
+				else
+					bccs.append(",");
+				bccs.append(r.toString());
+			}
+			if(!msg.bcc.isEmpty())
+				formData.add("bcc", bccs.toString());
+						
 			if (msg.subject != null)
 				formData.add("subject", msg.subject);
 			
@@ -147,6 +170,8 @@ public class SciamlabMailUtils {
 		String text;
 		List<BodyPart> attachments = new ArrayList<BodyPart>();
 		List<Address> to = new ArrayList<Address>();
+		List<Address> cc = new ArrayList<Address>();
+		List<Address> bcc = new ArrayList<Address>();
 		private Mail mailer;
 		
 		private Message(Mail mailer){
@@ -174,6 +199,24 @@ public class SciamlabMailUtils {
 		public Message to(List<String> address) throws Exception {
 			for(String a : address)
 				this.to.add(new InternetAddress(a));
+			return this;
+		}
+		public Message cc(String address) throws Exception {
+			this.cc.add(new InternetAddress(address));
+			return this;
+		}
+		public Message cc(List<String> address) throws Exception {
+			for(String a : address)
+				this.cc.add(new InternetAddress(a));
+			return this;
+		}
+		public Message bcc(String address) throws Exception {
+			this.bcc.add(new InternetAddress(address));
+			return this;
+		}
+		public Message bcc(List<String> address) throws Exception {
+			for(String a : address)
+				this.bcc.add(new InternetAddress(a));
 			return this;
 		}
 
@@ -248,6 +291,10 @@ public class SciamlabMailUtils {
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
 			message.addRecipients(javax.mail.Message.RecipientType.TO, msg.to.toArray(new Address[msg.to.size()]));
+			if (!msg.cc.isEmpty())
+				message.addRecipients(javax.mail.Message.RecipientType.CC, msg.cc.toArray(new Address[msg.cc.size()]));
+			if (!msg.bcc.isEmpty())
+				message.addRecipients(javax.mail.Message.RecipientType.BCC, msg.bcc.toArray(new Address[msg.bcc.size()]));
 			if (msg.subject != null)
 				message.setSubject(msg.subject);
 			
@@ -277,86 +324,6 @@ public class SciamlabMailUtils {
 			Transport.send(message);
 		}
 		
-//		@Deprecated
-//		public Mail subject(String subject) {
-//			this.subject = subject;
-//			return this;
-//		}
-//
-//		@Deprecated
-//		public Mail html(String html) {
-//			this.html = html;
-//			return this;
-//		}
-//		@Deprecated
-//		public Mail text(String text) {
-//			this.text = text;
-//			return this;
-//		}
-//		
-//		@Deprecated
-//		public Mail to(String address) throws Exception {
-//			this.to.add(new InternetAddress(address));
-//			return this;
-//		}
-//
-//		@Deprecated
-//		public Mail attach(File attachment) throws Exception {
-//			BodyPart attachemnt_part = new MimeBodyPart();
-//			DataSource source = new FileDataSource(attachment);
-//			attachemnt_part.setDataHandler(new DataHandler(source));
-//			attachemnt_part.setFileName(attachment.getName());
-//			this.attachments.add(attachemnt_part);
-//			return this;
-//		}
-//
-//		@Deprecated
-//		public void send() throws Exception {
-//			if (from == null)
-//				throw new ValidationException("sender cannot be null");
-//			if (password == null)
-//				throw new ValidationException("password cannot be null");
-//			if (to.isEmpty())
-//				throw new ValidationException("recipient list cannot be empty");
-//			if (!properties.containsKey("mail.smtp.host"))
-//				throw new ValidationException("server cannot be null");
-//			Session session = Session.getInstance(properties,
-//					new javax.mail.Authenticator() {
-//						protected PasswordAuthentication getPasswordAuthentication() {
-//							return new PasswordAuthentication(from, password);
-//						}
-//					});
-//			MimeMessage message = new MimeMessage(session);
-//			message.setFrom(new InternetAddress(from));
-//			message.addRecipients(javax.mail.Message.RecipientType.TO, to.toArray(new Address[to.size()]));
-//			if (subject != null)
-//				message.setSubject(subject);
-//			
-//			// Create a multipart message
-//			Multipart multipart = new MimeMultipart();
-//			
-//			if(text!=null){
-//				// Create the text message part
-//				MimeBodyPart text_part = new MimeBodyPart();
-//				text_part.setText(text, "utf-8");
-//				multipart.addBodyPart(text_part);
-//			}
-//			
-//			if(html!=null){
-//				// Create the html message part
-//				MimeBodyPart html_part = new MimeBodyPart();
-//				html_part.setContent(html, "text/html; charset=utf-8");
-//				multipart.addBodyPart(html_part);
-//			}
-//			//attachments
-//			for (BodyPart att : attachments) {
-//				multipart.addBodyPart(att);
-//			}
-//			
-//			// Set the complete message parts
-//			message.setContent(multipart);
-//			Transport.send(message);
-//		}
 	}
 
 	public static Mail message(String from, String password, String server) {
