@@ -11,7 +11,7 @@ public class DistributionListEmptyException extends DatasetBuilderException {
 	public DistributionListEmptyException(Throwable t){
 		super(t);
 	}
-
+	
 	public DistributionListEmptyException() {
 		super();
 	}
