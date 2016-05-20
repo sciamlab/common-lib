@@ -1,7 +1,9 @@
 package com.sciamlab.common.util;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilderException;
 
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
@@ -48,7 +51,7 @@ public class HTTPClient {
 //		return true;
 //	}
 	
-	public Response.Status getURLResponseStatus(URL url) {
+	public Response.Status getURLResponseStatus(URL url) throws UriBuilderException {
 		Integer cached = urlCacheStatus.getIfPresent(url);
 		if (cached!=null)
 			return Response.Status.fromStatusCode(cached);
@@ -58,7 +61,7 @@ public class HTTPClient {
 		return Response.Status.fromStatusCode(r.getStatus());
 	}
 	
-	public boolean isOK(URL url){
+	public boolean isOK(URL url) throws UriBuilderException{
 //		return this.is(new ArrayList<Response.Status>(){{add(Response.Status.OK);add(Response.Status.SEE_OTHER);add(Response.Status.MOVED_PERMANENTLY);}}, url);
 		return getURLResponseStatus(url).getStatusCode()<400;
 	}
@@ -161,11 +164,13 @@ public class HTTPClient {
 		return b.get();
 	}
 	
-	public Response doHEAD(URL url){
+	public Response doHEAD(URL url) throws UriBuilderException{
 		return this.doHEAD(url, null, true, null, null, new Integer(10000));
 	}
 	
-	public Response doHEAD(URL url, String user_agent, boolean follow_redirects, MultivaluedMap<String, String> params, MultivaluedMap<String, String> header, Integer timeout){
+	public Response doHEAD(
+			URL url, String user_agent, boolean follow_redirects, MultivaluedMap<String, String> params, MultivaluedMap<String, String> header, Integer timeout) 
+					throws UriBuilderException{
 		Client client = ClientBuilder.newClient();
 		if(timeout!=null){
 		    client.property(ClientProperties.CONNECT_TIMEOUT, timeout);
