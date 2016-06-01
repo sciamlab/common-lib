@@ -16,6 +16,10 @@ import com.sciamlab.common.model.mdr.EUNamedAuthorityEntry;
 import com.sciamlab.common.model.mdr.EUNamedAuthorityVocabulary;
 
 public class EUNamedAuthorityFrequency extends EUNamedAuthorityEntry {
+	
+	public enum Frequency{
+		TRIENNIAL(), BIENNIAL(), ANNUAL(), ANNUAL_2(), QUARTERLY(), BIMONTHLY(), MONTHLY(), BIWEEKLY(), WEEKLY(), 
+		DAILY(), DAILY_2(), CONT(), IRREG(), UNKNOWN(), OTHER(), NEVER();	}
 
 	public final URI sameAs;
 	public final String description;

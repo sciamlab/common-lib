@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.sciamlab.common.model.datacatalog.OpenDataFrequency;
-
 /**
  * 
  * @author SciamLab
