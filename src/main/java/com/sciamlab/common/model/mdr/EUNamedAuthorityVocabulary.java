@@ -62,7 +62,7 @@ public enum EUNamedAuthorityVocabulary {
 		this.alias_file = alias_file;
 		this.file = file;
 		try {
-			this.uri = new URI(BASE_URI+id+"/xml/"+file);
+			this.uri = new URI(BASE_URI+id+"/"+id);
 			this.url = new URL(BASE_URL+id+"/xml/"+file);
 		} catch (MalformedURLException | URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -82,7 +82,7 @@ public enum EUNamedAuthorityVocabulary {
 	 */
 	private Map<String, EUNamedAuthorityEntry> byAlias = new TreeMap<String, EUNamedAuthorityEntry>();
 	public <E extends EUNamedAuthorityEntry> E getByAlias(String alias){
-		return (E) byAlias.get(alias.toLowerCase().trim());
+		return alias==null ? null : (E) byAlias.get(alias.toLowerCase().trim());
 	}
 	public EUNamedAuthorityVocabulary setAlias(EUNamedAuthorityEntry entry, String alias){
 		byAlias.put(alias.toLowerCase().trim(), entry);

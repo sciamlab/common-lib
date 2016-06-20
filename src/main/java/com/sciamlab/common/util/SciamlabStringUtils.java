@@ -141,6 +141,10 @@ public class SciamlabStringUtils {
 		put("&#39;", " ");	//.replaceAll("&#039;", " ")
 		put("&#39", " ");	//.replaceAll("&#039", " ")
 		put("&#x27;", " ");
+		put("%c3%a0", "a");		put("%C3%A0", "a");
+		put("%e2%80%99", "'");	put("%E2%80%99", "'");
+		put("%c2%b0", "");		put("%C2%B0", "");
+		put("%c3%a8", "e");		put("%C3%A8", "e");
 		put("&quot;", "");
 		put("&rsquo;", " ");
 		put("&agrave", "a");	//.replaceAll("'", " ")\"

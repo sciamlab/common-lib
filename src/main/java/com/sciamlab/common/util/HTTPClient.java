@@ -34,12 +34,18 @@ public class HTTPClient {
 	private Client c;
 	
 	public HTTPClient() {
-		this.c = ClientBuilder.newClient();     
+		this.c = ClientBuilder.newClient(); 
+	}
+	
+	public HTTPClient(int timeout) {
+		this();
+		c.property(ClientProperties.CONNECT_TIMEOUT, timeout);
+		c.property(ClientProperties.READ_TIMEOUT,    timeout);
 	}
 	
 	public HTTPClient(HttpAuthenticationFeature feature) {
-		this.c = ClientBuilder.newClient(); 
-		this.c.register(feature);    
+		this(); 
+		c.register(feature);    
 	}
 
 //	private static Map<URL, Integer> urlCacheStatus = new HashMap<URL, Integer>(); 
@@ -165,18 +171,13 @@ public class HTTPClient {
 	}
 	
 	public Response doHEAD(URL url) throws UriBuilderException{
-		return this.doHEAD(url, null, true, null, null, new Integer(10000));
+		return this.doHEAD(url, null, true, null, null);
 	}
 	
 	public Response doHEAD(
-			URL url, String user_agent, boolean follow_redirects, MultivaluedMap<String, String> params, MultivaluedMap<String, String> header, Integer timeout) 
+			URL url, String user_agent, boolean follow_redirects, MultivaluedMap<String, String> params, MultivaluedMap<String, String> header) 
 					throws UriBuilderException{
-		Client client = ClientBuilder.newClient();
-		if(timeout!=null){
-		    client.property(ClientProperties.CONNECT_TIMEOUT, timeout);
-		    client.property(ClientProperties.READ_TIMEOUT,    timeout);
-		}
-		WebTarget wt = client.target(url.toString()).path("");
+		WebTarget wt = c.target(url.toString()).path("");
 		if(!follow_redirects)
 			wt.property(ClientProperties.FOLLOW_REDIRECTS, Boolean.FALSE);
 		if(params!=null){
