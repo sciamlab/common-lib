@@ -338,46 +338,4 @@ public class SciamlabMailUtils {
 		return new MailGun(mailgunHost, mailgunApiKey);
 	}
 
-	public static class SciamlabVelocityHelper {
-		
-		private static VelocityContext getContext(Properties props){
-			VelocityContext context = new VelocityContext();
-			if(props!=null){
-				for(Object key : props.keySet()){
-	//				System.out.println((String) key+": "+ props.getProperty((String) key));
-					context.put((String) key, props.getProperty((String) key));
-				}
-			}
-			return context;
-		}
-		
-		public static String getTemplateFromInputStream(Properties velocity_props, Properties props, InputStream is){
-			return getTemplateFromInputStream(velocity_props, props, is, 1);
-		}
-		
-		public static String getTemplateFromInputStream(Properties velocity_props, Properties props, InputStream is, int iterations){
-			return getTemplateFromString(velocity_props, props, SciamlabStreamUtils.convertStreamToString(is), iterations);
-		}
-		
-		public static String getTemplateFromString(Properties velocity_props, Properties props, String template){
-			return getTemplateFromString(velocity_props, props, template, 1);
-		}
-		
-		public static String getTemplateFromString(Properties velocity_props, Properties props, String template, int iterations){
-	        VelocityEngine ve = new VelocityEngine();
-	        if(velocity_props!=null){
-		        for(Object key : velocity_props.keySet()){
-	//				System.out.println((String) key+": "+ props.getProperty((String) key));
-		        	ve.setProperty((String) key, velocity_props.getProperty((String) key));
-				}
-	        }
-	        ve.init();
-			for(int i=0 ; i<iterations ; i++){
-				StringWriter swOut = new StringWriter();
-		        ve.evaluate(getContext(props), swOut, "SciamlabVelocityHelper", template);
-		        template = swOut.toString();
-			}
-			return template;
-		}
-	}
 }
