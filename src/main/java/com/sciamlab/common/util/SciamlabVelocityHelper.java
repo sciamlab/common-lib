@@ -8,6 +8,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.log.Log;
 
 public class SciamlabVelocityHelper {
 	
@@ -18,6 +19,7 @@ public class SciamlabVelocityHelper {
 	private SciamlabVelocityHelper(Builder builder){
 		this.ve = new VelocityEngine(builder.velocity_props); 
 		this.ve.init();
+		Log log = this.ve.getLog();
 	}
 	
 	public String getTemplateFromInputStream(Properties props, InputStream is){
@@ -37,7 +39,7 @@ public class SciamlabVelocityHelper {
 		if(props!=null)
 			for(Entry<Object, Object> prop : props.entrySet()){
 //				System.out.println((String) key+": "+ props.getProperty((String) key));
-				context.put((String) prop.getKey(), (String) prop.getValue());
+				context.put((String) prop.getKey(), prop.getValue());
 			}
 		for(int i=0 ; i<iterations ; i++){
 			StringWriter swOut = new StringWriter();
