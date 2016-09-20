@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 public class NominatimGeocoder implements Geocoder{
 	
+	private static final long serialVersionUID = 8720061397382881933L;
+
 	public final static String DEFAULT_URL = "http://nominatim.openstreetmap.org/search.php";
 	public final static String DEFAULT_COUNTRYCODE = "it";
 	public final static String DEFAULT_FORMAT = "json";

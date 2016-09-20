@@ -1,15 +1,14 @@
 package com.sciamlab.common.model.mdr;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,10 +21,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.sciamlab.common.exception.SciamlabException;
-import com.sciamlab.common.util.SciamlabCollectionUtils;
 import com.sciamlab.common.util.SciamlabDateUtils;
 
-public class EUNamedAuthorityEntry implements JSONString {
+public class EUNamedAuthorityEntry implements JSONString, Serializable {
+
+	private static final long serialVersionUID = 3670754798696363485L;
 
 	public final String authority_code;
 	public final EUNamedAuthorityVocabulary vocabulary;

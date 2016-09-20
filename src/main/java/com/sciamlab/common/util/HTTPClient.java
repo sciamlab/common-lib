@@ -1,6 +1,7 @@
 package com.sciamlab.common.util;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -29,8 +30,8 @@ import com.google.common.cache.CacheBuilder;
  *
  */
 
-public class HTTPClient {
-	
+public class HTTPClient{
+
 	private Client c;
 	
 	public HTTPClient() {

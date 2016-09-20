@@ -1,5 +1,6 @@
 package com.sciamlab.common.util;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,11 +11,15 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class SlackLogger{
+public class SlackLogger implements Serializable{
 	
+	private static final long serialVersionUID = -7336394841559291152L;
+	private static final Logger logger = Logger.getLogger(SlackLogger.class);
+
 	private final URL url;
 	private final String channel;
 	private final String username;
@@ -29,9 +34,7 @@ public class SlackLogger{
 	public static final String WARNING = YELLOW;
 	public static final String INFO = BLUE;
 	
-	private HTTPClient http = new HTTPClient();
-	
-	public SlackLogger(SlackLoggerBuilder builder) {
+	public SlackLogger(Builder builder) {
 		this.url = builder.url;
 		this.channel = builder.channel;
 		this.username = builder.username;
@@ -61,7 +64,7 @@ public class SlackLogger{
 		JSONObject json = new JSONObject();
 //		json.put("text", message);
 		if(this.channel!=null)
-			json.put("channel", channel);
+			json.put("channel", "#"+channel);
 		if(this.username!=null)
 			json.put("username", username);
 		if(text!=null)
@@ -79,12 +82,13 @@ public class SlackLogger{
 		}
 //		.put("icon_emoji", ":ghost:")
 		;
+		HTTPClient http = new HTTPClient();
 		Response response = http.doPOST(url, "payload="+json.toString(), MediaType.APPLICATION_FORM_URLENCODED_TYPE, null, null);
 		return response.readEntity(String.class);
 	}
 	
 	public static void main(String[] args) throws MalformedURLException {
-		SlackLogger slack = SlackLoggerBuilder.init(new URL("https://hooks.slack.com/services/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")).build();
+		SlackLogger slack = new SlackLogger.Builder(new URL("https://hooks.slack.com/services/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")).build();
 		System.out.println(slack.log(null, "ciao", GREEN, new ArrayList<Map<String, Object>>(){{add(new HashMap<String, Object>(){{put("title", "title");put("value", "value\nvalue");}});}}));
 //		System.out.println(slack.log("Optional text that should appear within the attachment <https://beta.sciamlab.com/amaca_log/|log here>"));
 //		System.out.println(slack.success("success"));
@@ -94,26 +98,22 @@ public class SlackLogger{
 	}
 
 	
-	public static class SlackLoggerBuilder{
+	public static class Builder{
 		
 		private final URL url;
 		private String channel;
 		private String username;
 		
-		public static SlackLoggerBuilder init(URL url){
-			return new SlackLoggerBuilder(url);
-		}
-		
-		private SlackLoggerBuilder(URL url){
+		public Builder(URL url){
 			this.url = url;
 		}
 		
-		public SlackLoggerBuilder username(String username){
+		public Builder username(String username){
 			this.username = username;
 			return this;
 		}
 		
-		public SlackLoggerBuilder channel(String channel){
+		public Builder channel(String channel){
 			this.channel = channel;
 			return this;
 		}
