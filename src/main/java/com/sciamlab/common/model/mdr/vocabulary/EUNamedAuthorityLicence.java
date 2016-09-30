@@ -23,13 +23,20 @@ public class EUNamedAuthorityLicence extends EUNamedAuthorityEntry {
 	public final String version;
 	public final Map<String, String> acronyms;
 	
-	private EUNamedAuthorityLicence(String authority_code, Date start_use, Map<String, String> labels
-			, URI exactMatch, String classification, String version, Map<String, String> acronyms) throws URISyntaxException {
-		super(EUNamedAuthorityVocabulary.LICENCE, authority_code, start_use, labels);
-		this.exactMatch = exactMatch;
-		this.classification = classification;
-		this.version = version;
-		this.acronyms = acronyms;
+//	private EUNamedAuthorityLicence(String authority_code, Date start_use, Map<String, String> labels
+//			, URI exactMatch, String classification, String version, Map<String, String> acronyms) throws URISyntaxException {
+//		super(EUNamedAuthorityVocabulary.LICENCE, authority_code, start_use, labels);
+//		this.exactMatch = exactMatch;
+//		this.classification = classification;
+//		this.version = version;
+//		this.acronyms = acronyms;
+//	}
+	private EUNamedAuthorityLicence(Builder builder) {
+		super(builder);
+		this.exactMatch = builder.exactMatch;
+		this.classification = builder.classification;
+		this.version = builder.version;
+		this.acronyms = builder.acronyms;
 	}
 
 	@Override
@@ -47,7 +54,7 @@ public class EUNamedAuthorityLicence extends EUNamedAuthorityEntry {
 		public URI exactMatch;
 		public Map<String, String> acronyms = new HashMap<String, String>();
 		
-		public Builder(String authority_code){
+		public Builder(String authority_code) throws SciamlabException{
 			super(EUNamedAuthorityVocabulary.LICENCE, authority_code);
 		}
 		
@@ -96,7 +103,8 @@ public class EUNamedAuthorityLicence extends EUNamedAuthorityEntry {
 		}
 		
 		public EUNamedAuthorityLicence build() throws URISyntaxException{
-			return new EUNamedAuthorityLicence(authority_code, start_use, labels, exactMatch, classification, version, acronyms);
+//			return new EUNamedAuthorityLicence(authority_code, start_use, labels, exactMatch, classification, version, acronyms);
+			return new EUNamedAuthorityLicence(this);
 		}
 	}
 

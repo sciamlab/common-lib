@@ -15,16 +15,20 @@ import com.sciamlab.common.model.mdr.EUNamedAuthorityVocabulary;
 
 public class EUNamedAuthorityDataTheme extends EUNamedAuthorityEntry {
 	
-	public enum Theme{
-		AGRI(),ECON(),EDUC(),ENER(),ENVI(),GOVE(),HEAL(),INTR(),JUST(),REGI(),SOCI(),TECH(),TRAN();
-	}
+//	public enum Theme{
+//		AGRI,ECON,EDUC,ENER,ENVI,GOVE,HEAL,INTR,JUST,REGI,SOCI,TECH,TRAN;
+//	}
 
 	public final String description;
 	
-	private EUNamedAuthorityDataTheme(String authority_code, Date start_use, Map<String, String> labels
-			, String description) throws URISyntaxException {
-		super(EUNamedAuthorityVocabulary.DATA_THEME, authority_code, start_use, labels);
-		this.description = description;
+//	private EUNamedAuthorityDataTheme(String authority_code, Date start_use, Map<String, String> labels
+//			, String description) throws URISyntaxException {
+//		super(EUNamedAuthorityVocabulary.DATA_THEME, authority_code, start_use, labels);
+//		this.description = description;
+//	}
+	private EUNamedAuthorityDataTheme(Builder builder) {
+		super(builder);
+		this.description = builder.description;
 	}
 
 	@Override
@@ -36,7 +40,7 @@ public class EUNamedAuthorityDataTheme extends EUNamedAuthorityEntry {
 	public static class Builder extends EUNamedAuthorityEntry.Builder{
 		public String description;
 		
-		public Builder(String authority_code){
+		public Builder(String authority_code) throws SciamlabException{
 			super(EUNamedAuthorityVocabulary.DATA_THEME, authority_code);
 		}
 		
@@ -63,7 +67,8 @@ public class EUNamedAuthorityDataTheme extends EUNamedAuthorityEntry {
 		}
 		
 		public EUNamedAuthorityDataTheme build() throws URISyntaxException{
-			return new EUNamedAuthorityDataTheme(authority_code, start_use, labels, description);
+//			return new EUNamedAuthorityDataTheme(authority_code, start_use, labels, description);
+			return new EUNamedAuthorityDataTheme(this);
 		}
 	}
 }

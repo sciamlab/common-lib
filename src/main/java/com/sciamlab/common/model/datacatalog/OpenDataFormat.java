@@ -11,7 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sciamlab.common.exception.OpenDataFormatException;
+import com.sciamlab.common.exception.SciamlabException;
 import com.sciamlab.common.model.mdr.EUNamedAuthorityVocabulary;
+import com.sciamlab.common.model.mdr.EUNamedAuthorityVocabularyMap;
 import com.sciamlab.common.model.mdr.vocabulary.EUNamedAuthorityFileType;
 
 public enum OpenDataFormat {
@@ -83,63 +85,63 @@ public enum OpenDataFormat {
 //	ATOM("ATOM"),
 //	OTHER("OTHER");
 	
-	JPEG("JPEG"),
-	RDF_TURTLE("RDF_TURTLE"),
-	RDF_N_TRIPLES("RDF_N_TRIPLES"),
-	SPARQLQ("SPARQLQ"),
-	OWL("OWL"),
-	RDF("RDF"),
-	PDF("PDF"),
-	HTML("HTML"),
-	XML("XML"),
-	TXT("TXT"),
-	SCHEMA_XML("SCHEMA_XML"),
-	XLS("XLS"),
-	CSV("CSV"),
-	TSV("TSV"),
-	SHP("SHP"),
-	GRID_ASCII("GRID_ASCII"),
-	KML("KML"),
-	KMZ("KMZ"),
-	ODC("ODC"),
-	DBF("DBF"),
-	JSON("JSON"),
-	JSON_LD("JSON-LD"),
-	MXD("MXD"),
-	ZIP("ZIP"),
-	MAP_PRVW("MAP_PRVW"),
-	ODS("ODS"),
-	ODT("ODT"),
-	TIFF("TIFF"),
-	PNG("PNG"),
-	DOC("DOC"),
-	GML("GML"),
-	MDB("MDB"),
-	ECW("ECW"),
-	RTF("RTF"),
-	ATOM("ATOM"),
+	JPEG,//("JPEG"),
+	RDF_TURTLE,//("RDF_TURTLE"),
+	RDF_N_TRIPLES,//("RDF_N_TRIPLES"),
+	SPARQLQ,//("SPARQLQ"),
+	OWL,//("OWL"),
+	RDF,//("RDF"),
+	PDF,//("PDF"),
+	HTML,//("HTML"),
+	XML,//("XML"),
+	TXT,//("TXT"),
+	SCHEMA_XML,//("SCHEMA_XML"),
+	XLS,//("XLS"),
+	CSV,//("CSV"),
+	TSV,//("TSV"),
+	SHP,//("SHP"),
+	GRID_ASCII,//("GRID_ASCII"),
+	KML,//("KML"),
+	KMZ,//("KMZ"),
+	ODC,//("ODC"),
+	DBF,//("DBF"),
+	JSON,//("JSON"),
+	JSON_LD,//("JSON-LD"),
+	MXD,//("MXD"),
+	ZIP,//("ZIP"),
+	MAP_PRVW,//("MAP_PRVW"),
+	ODS,//("ODS"),
+	ODT,//("ODT"),
+	TIFF,//("TIFF"),
+	PNG,//("PNG"),
+	DOC,//("DOC"),
+	GML,//("GML"),
+	MDB,//("MDB"),
+	ECW,//("ECW"),
+	RTF,//("RTF"),
+	ATOM,//("ATOM"),
 	
-	WCS("WCS"),
-	WFS("WFS"),
-	WMS("WMS");
+	WCS,//("WCS"),
+	WFS,//("WFS"),
+	WMS;//("WMS");
 	
-	private String id;
+//	private String id;
 	private Set<String> alias = new HashSet<String>();;
 	private EUNamedAuthorityFileType euNamedAuthorityFileType = null;
 	
-	public static Map<String, OpenDataFormat> byId = new TreeMap<String, OpenDataFormat>();
+//	public static Map<String, OpenDataFormat> byId = new TreeMap<String, OpenDataFormat>();
 	private static Map<String, OpenDataFormat> byAlias = new TreeMap<String, OpenDataFormat>();
 	public static OpenDataFormat getByAlias(String alias){
 		return byAlias.get(alias.toLowerCase().replace("\n", "").trim());
 	}
 	
-	private OpenDataFormat(String id){
-		this.id = id;
-		if(EUNamedAuthorityVocabulary.FILE_TYPE.entryMap.containsKey(id))
-			this.euNamedAuthorityFileType = (EUNamedAuthorityFileType) EUNamedAuthorityVocabulary.FILE_TYPE.entryMap.get(id); 
+	private OpenDataFormat(){//String id){
+//		this.id = id;
+//		this.euNamedAuthorityFileType = EUNamedAuthorityVocabularyMap.<EUNamedAuthorityFileType>get(EUNamedAuthorityVocabulary.FILE_TYPE).get(id);
+		this.euNamedAuthorityFileType = EUNamedAuthorityVocabularyMap.<EUNamedAuthorityFileType>get(EUNamedAuthorityVocabulary.FILE_TYPE).get(this.name());
 	}
 	
-	public String id() { return id; }
+//	public String id() { return id; }
 	public EUNamedAuthorityFileType euNamedAuthorityFileType() { return euNamedAuthorityFileType; }
 	public Set<String> alias() { return alias; }
 	public Set<String> alias(String alias){
@@ -157,17 +159,21 @@ public enum OpenDataFormat {
 	
 	static{
     	for(OpenDataFormat format : OpenDataFormat.values()){
-    		byId.put(format.id, format);
-    		format.alias(format.id);
-    		format.alias(format.id.toUpperCase());
-    		format.alias(format.id.toLowerCase());
+//    		byId.put(format.id, format);
+//    		format.alias(format.id);
+//    		format.alias(format.id.toUpperCase());
+//    		format.alias(format.id.toLowerCase());
+    		format.alias(format.name());
+    		format.alias(format.name().toUpperCase());
+    		format.alias(format.name().toLowerCase());
     	}
     }
 	
     @Override 
     public String toString() { 
     	JSONObject json = new JSONObject();
-    	json.put("id", this.id);
+//    	json.put("id", this.id);
+    	json.put("name", this.name());
     	json.put("alias", new JSONArray().put(alias));
     	return json.toString();
     }

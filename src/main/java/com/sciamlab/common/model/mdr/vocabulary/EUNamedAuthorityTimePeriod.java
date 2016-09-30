@@ -15,10 +15,14 @@ public class EUNamedAuthorityTimePeriod extends EUNamedAuthorityEntry {
 
 	public final String period_qualifier;
 	
-	private EUNamedAuthorityTimePeriod(String authority_code, Date start_use, Map<String, String> labels
-			, String period_qualifier) throws URISyntaxException {
-		super(EUNamedAuthorityVocabulary.TIMEPERIOD, authority_code, start_use, labels);
-		this.period_qualifier = period_qualifier;
+//	private EUNamedAuthorityTimePeriod(String authority_code, Date start_use, Map<String, String> labels
+//			, String period_qualifier) throws URISyntaxException {
+//		super(EUNamedAuthorityVocabulary.TIMEPERIOD, authority_code, start_use, labels);
+//		this.period_qualifier = period_qualifier;
+//	}
+	private EUNamedAuthorityTimePeriod(Builder builder) {
+		super(builder);
+		this.period_qualifier = builder.period_qualifier;
 	}
 
 	@Override
@@ -30,7 +34,7 @@ public class EUNamedAuthorityTimePeriod extends EUNamedAuthorityEntry {
 	public static class Builder extends EUNamedAuthorityEntry.Builder{
 		public String period_qualifier;
 		
-		public Builder(String authority_code){
+		public Builder(String authority_code) throws SciamlabException{
 			super(EUNamedAuthorityVocabulary.TIMEPERIOD, authority_code);
 		}
 		
@@ -46,7 +50,8 @@ public class EUNamedAuthorityTimePeriod extends EUNamedAuthorityEntry {
 		}
 		
 		public EUNamedAuthorityTimePeriod build() throws URISyntaxException{
-			return new EUNamedAuthorityTimePeriod(authority_code, start_use, labels, period_qualifier);
+//			return new EUNamedAuthorityTimePeriod(authority_code, start_use, labels, period_qualifier);
+			return new EUNamedAuthorityTimePeriod(this);
 		}
 	}
 }

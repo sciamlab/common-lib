@@ -30,15 +30,24 @@ public class EUNamedAuthorityCountry extends EUNamedAuthorityEntry {
  	public final Set<String> languages;
 	public final Map<String, String> long_labels;
 	
-	private EUNamedAuthorityCountry(String authority_code, Date start_use, Map<String, String> labels
-			, String classification, Boolean euro, Date euro_date, String continent, Set<String> languages, Map<String, String> long_labels) throws URISyntaxException {
-		super(EUNamedAuthorityVocabulary.COUNTRY, authority_code, start_use, labels);
-		this.classification = classification;
-		this.euro = euro;
-		this.euro_date = euro_date;
-		this.continent = continent;
-		this.languages = languages;
-		this.long_labels = long_labels;
+//	private EUNamedAuthorityCountry(String authority_code, Date start_use, Map<String, String> labels
+//			, String classification, Boolean euro, Date euro_date, String continent, Set<String> languages, Map<String, String> long_labels) throws URISyntaxException {
+//		super(EUNamedAuthorityVocabulary.COUNTRY, authority_code, start_use, labels);
+//		this.classification = classification;
+//		this.euro = euro;
+//		this.euro_date = euro_date;
+//		this.continent = continent;
+//		this.languages = languages;
+//		this.long_labels = long_labels;
+//	}
+	private EUNamedAuthorityCountry(Builder builder) {
+		super(builder);
+		this.classification = builder.classification;
+		this.euro = builder.euro;
+		this.euro_date = builder.euro_date;
+		this.continent = builder.continent;
+		this.languages = builder.languages;
+		this.long_labels = builder.long_labels;
 	}
 
 	@Override
@@ -60,7 +69,7 @@ public class EUNamedAuthorityCountry extends EUNamedAuthorityEntry {
 	 	public Set<String> languages = new HashSet<String>();
 		public Map<String, String> long_labels = new HashMap<String, String>();
 		
-		public Builder(String authority_code){
+		public Builder(String authority_code) throws SciamlabException{
 			super(EUNamedAuthorityVocabulary.COUNTRY, authority_code);
 		}
 		
@@ -126,7 +135,8 @@ public class EUNamedAuthorityCountry extends EUNamedAuthorityEntry {
 		}
 		
 		public EUNamedAuthorityCountry build() throws URISyntaxException{
-			return new EUNamedAuthorityCountry(authority_code, start_use, labels, classification, euro, euro_date, continent, languages, long_labels);
+//			return new EUNamedAuthorityCountry(authority_code, start_use, labels, classification, euro, euro_date, continent, languages, long_labels);
+			return new EUNamedAuthorityCountry(this);
 		}
 	}
 

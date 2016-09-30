@@ -21,49 +21,49 @@ public class EUNamedAuthorityTest {
 		BasicConfigurator.configure(console);
 	}
 
-	@Test
-	public <E extends EUNamedAuthorityEntry> void loadAllVocabularies() throws SciamlabException {
-		for (EUNamedAuthorityVocabulary vocabulary : EUNamedAuthorityVocabulary.values()) {
-			System.out.println("Vocabulary : " + vocabulary.toString());
-			for (E entry : vocabulary.<E>load().values()) {
-				org.junit.Assert.assertNotNull(entry);
-				System.out.println(entry);
-			}
-		}
-	}
-	
-
-	@Test
-	public void loadCountriesVocabularyCached() throws SciamlabException {
-		for (EUNamedAuthorityCountry entry : EUNamedAuthorityVocabulary.COUNTRY.<EUNamedAuthorityCountry>load().values()) {
-			org.junit.Assert.assertNotNull(entry);
-			System.out.println(entry);
-		}
-	}
-	
-	@Test
-	public void loadLanguagesVocabularyNOTCached() throws SciamlabException {
-		for (EUNamedAuthorityLanguage entry : EUNamedAuthorityVocabulary.LANGUAGE.<EUNamedAuthorityLanguage>load().values()) {
-			org.junit.Assert.assertNotNull(entry);
-			System.out.println(entry);
-		}
-	}
-	
-	@Test
-	public void loadFrequencyVocabularyWithAlias() throws SciamlabException {
-		for (EUNamedAuthorityFrequency entry : EUNamedAuthorityVocabulary.FREQUENCY.<EUNamedAuthorityFrequency>load().values()) {
-			org.junit.Assert.assertNotNull(entry);
-			System.out.println(entry);
-		}
-	}
-	
-	@Test
-	public <E extends EUNamedAuthorityEntry> void loadGenericVocabulary() throws SciamlabException {
-		for (E entry : EUNamedAuthorityVocabulary.FREQUENCY.<E>load().values()) {
-			org.junit.Assert.assertNotNull(entry);
-			System.out.println(entry);
-		}
-	}
+//	@Test
+//	public <E extends EUNamedAuthorityEntry> void loadAllVocabularies() throws SciamlabException {
+//		for (EUNamedAuthorityVocabulary vocabulary : EUNamedAuthorityVocabulary.values()) {
+//			System.out.println("Vocabulary : " + vocabulary.toString());
+//			for (E entry : vocabulary.<E>load().values()) {
+//				org.junit.Assert.assertNotNull(entry);
+//				System.out.println(entry);
+//			}
+//		}
+//	}
+//	
+//
+//	@Test
+//	public void loadCountriesVocabularyCached() throws SciamlabException {
+//		for (EUNamedAuthorityCountry entry : EUNamedAuthorityVocabulary.COUNTRY.<EUNamedAuthorityCountry>load().values()) {
+//			org.junit.Assert.assertNotNull(entry);
+//			System.out.println(entry);
+//		}
+//	}
+//	
+//	@Test
+//	public void loadLanguagesVocabularyNOTCached() throws SciamlabException {
+//		for (EUNamedAuthorityLanguage entry : EUNamedAuthorityVocabulary.LANGUAGE.<EUNamedAuthorityLanguage>load().values()) {
+//			org.junit.Assert.assertNotNull(entry);
+//			System.out.println(entry);
+//		}
+//	}
+//	
+//	@Test
+//	public void loadFrequencyVocabularyWithAlias() throws SciamlabException {
+//		for (EUNamedAuthorityFrequency entry : EUNamedAuthorityVocabulary.FREQUENCY.<EUNamedAuthorityFrequency>load().values()) {
+//			org.junit.Assert.assertNotNull(entry);
+//			System.out.println(entry);
+//		}
+//	}
+//	
+//	@Test
+//	public <E extends EUNamedAuthorityEntry> void loadGenericVocabulary() throws SciamlabException {
+//		for (E entry : EUNamedAuthorityVocabulary.FREQUENCY.<E>load().values()) {
+//			org.junit.Assert.assertNotNull(entry);
+//			System.out.println(entry);
+//		}
+//	}
 	
 	
 }

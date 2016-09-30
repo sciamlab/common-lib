@@ -36,12 +36,18 @@ public class EUNamedAuthorityFileType extends EUNamedAuthorityEntry {
 	public final String file_extension;
 	public final Map<String, String> long_labels;
 	
-	private EUNamedAuthorityFileType(String authority_code, Date start_use, Map<String, String> labels
-			, String internet_media_type, String file_extension, Map<String, String> long_labels) throws URISyntaxException {
-		super(EUNamedAuthorityVocabulary.FILE_TYPE, authority_code, start_use, labels);
-		this.internet_media_type = internet_media_type;
-		this.file_extension = file_extension;
-		this.long_labels = long_labels;
+//	private EUNamedAuthorityFileType(String authority_code, Date start_use, Map<String, String> labels
+//			, String internet_media_type, String file_extension, Map<String, String> long_labels) throws URISyntaxException {
+//		super(EUNamedAuthorityVocabulary.FILE_TYPE, authority_code, start_use, labels);
+//		this.internet_media_type = internet_media_type;
+//		this.file_extension = file_extension;
+//		this.long_labels = long_labels;
+//	}
+	private EUNamedAuthorityFileType(Builder builder) {
+		super(builder);
+		this.internet_media_type = builder.internet_media_type;
+		this.file_extension = builder.file_extension;
+		this.long_labels = builder.long_labels;
 	}
 
 	@Override
@@ -57,7 +63,7 @@ public class EUNamedAuthorityFileType extends EUNamedAuthorityEntry {
 		public String file_extension;
 		public Map<String, String> long_labels = new HashMap<String, String>();
 		
-		public Builder(String authority_code){
+		public Builder(String authority_code) throws SciamlabException{
 			super(EUNamedAuthorityVocabulary.FILE_TYPE, authority_code);
 		}
 		
@@ -94,7 +100,8 @@ public class EUNamedAuthorityFileType extends EUNamedAuthorityEntry {
 		}
 		
 		public EUNamedAuthorityFileType build() throws URISyntaxException{
-			return new EUNamedAuthorityFileType(authority_code, start_use, labels, internet_media_type, file_extension, long_labels);
+//			return new EUNamedAuthorityFileType(authority_code, start_use, labels, internet_media_type, file_extension, long_labels);
+			return new EUNamedAuthorityFileType(this);
 		}
 	}
 

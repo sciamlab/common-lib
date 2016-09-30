@@ -17,19 +17,25 @@ import com.sciamlab.common.model.mdr.EUNamedAuthorityVocabulary;
 
 public class EUNamedAuthorityFrequency extends EUNamedAuthorityEntry {
 	
+//	public static final String UNKNOWN = "UNKNOWN"; 
+	
 	public enum Frequency{
-		TRIENNIAL(), BIENNIAL(), ANNUAL(), ANNUAL_2(), QUARTERLY(), BIMONTHLY(), MONTHLY(), BIWEEKLY(), WEEKLY(), 
-		DAILY(), DAILY_2(), CONT(), IRREG(), UNKNOWN(), OTHER(), NEVER();	}
+		TRIENNIAL, BIENNIAL, ANNUAL, ANNUAL_2, QUARTERLY, BIMONTHLY, MONTHLY, BIWEEKLY, WEEKLY, DAILY, DAILY_2, CONT, IRREG, UNKNOWN, OTHER, NEVER;	
+	}
 
 	public final URI sameAs;
 	public final String description;
 	
-	
-	private EUNamedAuthorityFrequency(String authority_code, Date start_use, Map<String, String> labels
-			, URI sameAs, String description) throws URISyntaxException {
-		super(EUNamedAuthorityVocabulary.FREQUENCY, authority_code, start_use, labels);
-		this.sameAs = sameAs;
-		this.description = description;
+//	private EUNamedAuthorityFrequency(String authority_code, Date start_use, Map<String, String> labels
+//			, URI sameAs, String description) throws URISyntaxException {
+//		super(EUNamedAuthorityVocabulary.FREQUENCY, authority_code, start_use, labels);
+//		this.sameAs = sameAs;
+//		this.description = description;
+//	}
+	private EUNamedAuthorityFrequency(Builder builder) {
+		super(builder);
+		this.sameAs = builder.sameAs;
+		this.description = builder.description;
 	}
 	
 	@Override
@@ -43,7 +49,7 @@ public class EUNamedAuthorityFrequency extends EUNamedAuthorityEntry {
 		private URI sameAs;
 		private String description;
 		
-		public Builder(String authority_code){
+		public Builder(String authority_code) throws SciamlabException{
 			super(EUNamedAuthorityVocabulary.FREQUENCY, authority_code);
 		}
 		
@@ -79,7 +85,8 @@ public class EUNamedAuthorityFrequency extends EUNamedAuthorityEntry {
 			return this;
 		}
 		public EUNamedAuthorityFrequency build() throws URISyntaxException{
-			return new EUNamedAuthorityFrequency(authority_code, start_use, labels, sameAs, description);
+//			return new EUNamedAuthorityFrequency(authority_code, start_use, labels, sameAs, description);
+			return new EUNamedAuthorityFrequency(this);
 		}
 	}
 	

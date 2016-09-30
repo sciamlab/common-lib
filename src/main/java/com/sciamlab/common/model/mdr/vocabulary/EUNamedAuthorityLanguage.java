@@ -17,10 +17,14 @@ public class EUNamedAuthorityLanguage extends EUNamedAuthorityEntry {
 
 	public final String description;
 	
-	private EUNamedAuthorityLanguage(String authority_code, Date start_use, Map<String, String> labels
-			, String description) throws URISyntaxException {
-		super(EUNamedAuthorityVocabulary.LANGUAGE, authority_code, start_use, labels);
-		this.description = description;
+//	private EUNamedAuthorityLanguage(String authority_code, Date start_use, Map<String, String> labels
+//			, String description) throws URISyntaxException {
+//		super(EUNamedAuthorityVocabulary.LANGUAGE, authority_code, start_use, labels);
+//		this.description = description;
+//	}
+	private EUNamedAuthorityLanguage(Builder builder) {
+		super(builder);
+		this.description = builder.description;
 	}
 
 	@Override
@@ -32,7 +36,7 @@ public class EUNamedAuthorityLanguage extends EUNamedAuthorityEntry {
 	public static class Builder extends EUNamedAuthorityEntry.Builder{
 		public String description;
 
-		public Builder(String authority_code){
+		public Builder(String authority_code) throws SciamlabException{
 			super(EUNamedAuthorityVocabulary.LANGUAGE, authority_code);
 		}
 		
@@ -58,7 +62,8 @@ public class EUNamedAuthorityLanguage extends EUNamedAuthorityEntry {
 			return this;
 		}
 		public EUNamedAuthorityLanguage build() throws URISyntaxException{
-			return new EUNamedAuthorityLanguage(authority_code, start_use, labels, description);
+//			return new EUNamedAuthorityLanguage(authority_code, start_use, labels, description);
+			return new EUNamedAuthorityLanguage(this);
 		}
 	}
 

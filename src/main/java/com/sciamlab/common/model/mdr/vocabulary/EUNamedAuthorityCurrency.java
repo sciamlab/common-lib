@@ -12,13 +12,16 @@ import com.sciamlab.common.model.mdr.EUNamedAuthorityVocabulary;
 
 public class EUNamedAuthorityCurrency extends EUNamedAuthorityEntry {
 	
-	private EUNamedAuthorityCurrency(String authority_code, Date start_use, Map<String, String> labels) throws URISyntaxException {
-		super(EUNamedAuthorityVocabulary.CURRENCY, authority_code, start_use, labels);
+//	private EUNamedAuthorityCurrency(String authority_code, Date start_use, Map<String, String> labels) throws URISyntaxException {
+//		super(EUNamedAuthorityVocabulary.CURRENCY, authority_code, start_use, labels);
+//	}
+	private EUNamedAuthorityCurrency(Builder builder) {
+		super(builder);
 	}
 
 	public static class Builder extends EUNamedAuthorityEntry.Builder{
 		
-		public Builder(String authority_code){
+		public Builder(String authority_code) throws SciamlabException{
 			super(EUNamedAuthorityVocabulary.CURRENCY, authority_code);
 		}
 		
@@ -27,7 +30,8 @@ public class EUNamedAuthorityCurrency extends EUNamedAuthorityEntry {
 		}
 		
 		public EUNamedAuthorityCurrency build() throws URISyntaxException{
-			return new EUNamedAuthorityCurrency(authority_code, start_use, labels);
+//			return new EUNamedAuthorityCurrency(authority_code, start_use, labels);
+			return new EUNamedAuthorityCurrency(this);
 		}
 	}
 

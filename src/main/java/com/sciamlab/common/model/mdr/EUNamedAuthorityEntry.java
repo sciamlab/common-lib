@@ -28,33 +28,50 @@ public class EUNamedAuthorityEntry implements JSONString, Serializable {
 	private static final long serialVersionUID = 3670754798696363485L;
 
 	public final String authority_code;
-	public final EUNamedAuthorityVocabulary vocabulary;
+//	public volatile EUNamedAuthorityVocabulary vocabulary;
 	public final URI uri;
 	public final Date start_use;
 	public final Map<String, String> labels;
-	public final Set<String> alias = new HashSet<String>();
+//	private final Set<String> alias = new HashSet<String>();
+	
+//	public Set<String> getAliases(){
+//		return alias;
+//	}
+//
+//	public EUNamedAuthorityEntry setAlias(String alias) {
+//		this.alias.add(alias.toLowerCase().trim());
+////		vocabulary.setAlias(this, alias);
+//		return this;
+//	}
+//
+//	public EUNamedAuthorityEntry setAliases(Collection<String> aliases) {
+//		for (String a : aliases)
+//			this.setAlias(a);
+//		return this;
+//	}
 
-	public EUNamedAuthorityEntry setAlias(String alias) {
-		this.alias.add(alias.toLowerCase().trim());
-		vocabulary.setAlias(this, alias);
-		return this;
-	}
-
-	public EUNamedAuthorityEntry setAliases(Collection<String> aliases) {
-		for (String a : aliases)
-			this.setAlias(a);
-		return this;
-	}
-
-	protected EUNamedAuthorityEntry(EUNamedAuthorityVocabulary vocabulary, String authority_code, Date start_use, Map<String, String> labels) throws URISyntaxException {
+//	protected EUNamedAuthorityEntry(EUNamedAuthorityVocabulary vocabulary, String authority_code, Date start_use, Map<String, String> labels) throws URISyntaxException {
+//		super();
+//		this.vocabulary = vocabulary;
+//		this.authority_code = authority_code;
+//		this.setAlias(authority_code);
+//		this.uri = new URI(vocabulary.uri() + "/" + authority_code);
+//		this.start_use = start_use;
+//		this.labels = labels;
+//		this.setAliases(labels.values());
+//	}
+	protected EUNamedAuthorityEntry(Builder builder) {//throws URISyntaxException {
 		super();
-		this.vocabulary = vocabulary;
-		this.authority_code = authority_code;
-		this.setAlias(authority_code);
-		this.uri = new URI(vocabulary.uri() + "/" + authority_code);
-		this.start_use = start_use;
-		this.labels = labels;
-		this.setAliases(labels.values());
+//		this.vocabulary = builder.vocabulary;
+		this.authority_code = builder.authority_code;
+		this.uri = builder.uri;
+		this.start_use = builder.start_use;
+		this.labels = builder.labels;
+		
+//		this.setAlias(authority_code);
+//		this.setAliases(labels.values());
+//		builder.vocabulary.setAlias(this, authority_code);
+//		builder.vocabulary.setAliases(this, labels.values());
 	}
 	
 	@Override
@@ -63,7 +80,8 @@ public class EUNamedAuthorityEntry implements JSONString, Serializable {
 				.put("uri", uri.toString())
 				.put("start-use", SciamlabDateUtils.getDateAsIso8061String(start_use))
 				.put("labels", new JSONObject(labels))
-				.put("alias", new JSONArray(alias)).toString();
+//				.put("alias", new JSONArray(alias))
+				.toString();
 	}
 
 	@Override
@@ -97,19 +115,24 @@ public class EUNamedAuthorityEntry implements JSONString, Serializable {
 	}
 
 	public static class Builder {
-		protected String authority_code;
-		protected EUNamedAuthorityVocabulary vocabulary;
+		protected final String authority_code;
+		protected final EUNamedAuthorityVocabulary vocabulary;
+		protected final URI uri;
 		protected Date start_use;
 		protected Map<String, String> labels = new HashMap<String, String>();
 
-		public Builder(EUNamedAuthorityVocabulary vocabulary, String authority_code) {
+		public Builder(EUNamedAuthorityVocabulary vocabulary, String authority_code) throws SciamlabException {
 			this.authority_code = authority_code;
 			this.vocabulary = vocabulary;
+			try {
+				this.uri = new URI(vocabulary.uri() + "/" + authority_code);
+			} catch (URISyntaxException e) {
+				throw new SciamlabException(e);
+			}
 		}
 		
 		public Builder(EUNamedAuthorityVocabulary vocabulary, Element record) throws SciamlabException {
-			this.authority_code = record.getElementsByTagName("authority-code").item(0).getFirstChild().getNodeValue();
-			this.vocabulary = vocabulary;
+			this(vocabulary, record.getElementsByTagName("authority-code").item(0).getFirstChild().getNodeValue());
 			try {
 				this.start_use = new SimpleDateFormat("yyyy-MM-dd").parse(record.getElementsByTagName("start.use").item(0).getFirstChild().getNodeValue());
 			} catch (DOMException | ParseException e) {
@@ -139,7 +162,8 @@ public class EUNamedAuthorityEntry implements JSONString, Serializable {
 		}
 
 		public EUNamedAuthorityEntry build() throws URISyntaxException {
-			return new EUNamedAuthorityEntry(vocabulary, authority_code, start_use, labels);
+//			return new EUNamedAuthorityEntry(vocabulary, authority_code, start_use, labels);
+			return new EUNamedAuthorityEntry(this);
 		}
 	}
 
