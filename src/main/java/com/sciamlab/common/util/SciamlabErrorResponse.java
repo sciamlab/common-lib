@@ -1,6 +1,7 @@
 package com.sciamlab.common.util;
 
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 
@@ -48,8 +49,13 @@ public class SciamlabErrorResponse implements JSONString{
 		JSONObject json = new JSONObject();
 		json.put("code", errorCode);
 		json.put("error", errorMessage);
-		if(applicationMessage != null && !"".equals(applicationMessage))
-			json.put("msg", applicationMessage);
+		if(applicationMessage != null && !"".equals(applicationMessage)){
+			try{
+				json.put("msg", new JSONObject(applicationMessage));
+			}catch(JSONException e){
+				json.put("msg", applicationMessage);
+			}
+		}
 		return json.toString();
 	}
 	
