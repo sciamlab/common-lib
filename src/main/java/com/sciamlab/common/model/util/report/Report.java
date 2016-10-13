@@ -18,13 +18,15 @@ public class Report extends ArrayList<ReportItem>{
 	private static final Logger logger = Logger.getLogger(Report.class);
 
 	private static String DEFAULT_LOG_FILE = "log4j.properties";
-	private static String DEFAULT_REPORT_LOG_FILE = "REPORT.csv";
-	public final String name;
+//	private static String DEFAULT_REPORT_LOG_FILE = "REPORT.csv";
 	
 	public static final String CSV = "csv";
 	public static final String COMMA = ",";
-	public static String CSV_SEPARATOR = COMMA;
-	public static String FILE_PREFIX = "REPORT_";
+	
+	public final String csv_separator;
+	public final String file_prefix;
+	public final String name;
+	
 	public static final Map<String, Method> SUPPORTED_FORMATS = new HashMap<String, Method>();
 	
 	private static final Class noparams[] = {};
@@ -38,11 +40,10 @@ public class Report extends ArrayList<ReportItem>{
 		}
 	}
 	
-	public Report(String name) {
-		this.name = name;
-	}
-	public Report() {
-		this("");
+	private Report(Builder builder) {
+		this.name = builder.name;
+		this.csv_separator = builder.csv_separator;
+		this.file_prefix = builder.file_prefix;
 	}
 
 	public void printAs(String format) throws Exception {
@@ -57,13 +58,13 @@ public class Report extends ArrayList<ReportItem>{
 			return;
 		try {
 			String reportPath = System.getProperty("report_filepath");
-			String newReportPath = reportPath.replace(reportPath.substring(reportPath.lastIndexOf("/")+1, reportPath.length()), FILE_PREFIX+name.replace(" ", "_")+".CSV");
+			String newReportPath = reportPath.replace(reportPath.substring(reportPath.lastIndexOf("/")+1, reportPath.length()), file_prefix+name.replace(" ", "_")+".CSV");
 			System.setProperty("report_filepath", newReportPath);
 			PropertyConfigurator.configure(SciamlabStreamUtils.getInputStream(System.getProperty("logprops_filepath", DEFAULT_LOG_FILE)));
 			Logger loggerReport = Logger.getLogger("reportLogger");
-			loggerReport.info(ReportItem.headerToCSV());
+			loggerReport.info(ReportItem.headerToCSV(csv_separator));
 			for (ReportItem item: this) {
-				loggerReport.info(item.toCSV());
+				loggerReport.info(item.toCSV(csv_separator));
 			}
 		} catch (FileNotFoundException e) {
 			logger.error(e.getMessage(), e);
@@ -74,7 +75,35 @@ public class Report extends ArrayList<ReportItem>{
 		return name;
 	}
 
-	public void addReportItems(Report report){
+	public synchronized void addReportItems(Report report){
 		this.addAll(report);
+	}
+	
+	public static class Builder{
+		
+		private String csv_separator = COMMA;
+		private String file_prefix = "REPORT_";
+		private String name = "";
+		
+		public Builder(){ }
+		
+		public Builder name(String name){
+			this.name = name;
+			return this;
+		}
+		public Builder csv_separator(String csv_separator){
+			if(csv_separator!=null)
+				this.csv_separator = csv_separator;
+			return this;
+		}
+		public Builder file_prefix(String file_prefix){
+			if(file_prefix!=null)
+				this.file_prefix = file_prefix;
+			return this;
+		}
+		
+		public Report build(){
+			return new Report(this);
+		}
 	}
 }

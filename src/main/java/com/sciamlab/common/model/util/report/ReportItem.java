@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.sciamlab.common.util.SciamlabDateUtils;
+
 
 public class ReportItem {
 	
@@ -24,24 +26,24 @@ public class ReportItem {
 		this.resource = resource;
 	}
 	
-	public String toCSV(){
+	public String toCSV(String separator){
 		StringBuffer csv = new StringBuffer();
-		csv.append("\"").append(date).append("\"");
-		csv.append(Report.CSV_SEPARATOR).append("\"").append(type).append("\"");
-		csv.append(Report.CSV_SEPARATOR).append("\"").append(parentResource).append("\"");
-		csv.append(Report.CSV_SEPARATOR).append("\"").append(landingPage).append("\"");
-		csv.append(Report.CSV_SEPARATOR).append("\"").append(description).append("\"");
+		csv.append("\"").append(SciamlabDateUtils.getDateAsIso8061String(date)).append("\"");
+		csv.append(separator).append("\"").append(type).append("\"");
+		csv.append(separator).append("\"").append(parentResource).append("\"");
+		csv.append(separator).append("\"").append(landingPage).append("\"");
+		csv.append(separator).append("\"").append(description).append("\"");
 		return csv.toString();
 	}
 	
-	public static String headerToCSV(){
+	public static String headerToCSV(String separator){
 		StringBuffer csv = new StringBuffer();
 		boolean first = true;
 		for(String col : HEADER){
 			if(first)
 				first = false;
 			else
-				csv.append(Report.CSV_SEPARATOR);
+				csv.append(separator);
 			csv.append("\""+col+"\"");
 		}
 		return csv.toString();

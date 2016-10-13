@@ -1,10 +1,8 @@
 package com.sciamlab.common.util;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +16,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilderException;
 
+import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
@@ -50,27 +49,46 @@ public class HTTPClient{
 	}
 
 //	private static Map<URL, Integer> urlCacheStatus = new HashMap<URL, Integer>(); 
-	private static Cache<URL, Integer> urlCacheStatus = CacheBuilder.newBuilder().maximumSize(10000).build();
-//	private synchronized boolean checkAndUpdateCache(String url){
-//		if(URLS_CACHE.getIfPresent(url)!=null)
-//			return false;
-//		URLS_CACHE.put(url, url);
-//		return true;
+//	private static Cache<URL, Integer> urlCacheStatus = CacheBuilder.newBuilder().maximumSize(10000).build();
+//	public Response.Status getURLResponseStatus(URL url) {
+//		Integer cached = urlCacheStatus.getIfPresent(url);
+//		if (cached!=null)
+//			return Response.Status.fromStatusCode(cached);
+//		
+//		Response r = this.doHEAD(url);
+//		urlCacheStatus.put(url, r.getStatus());
+//		return Response.Status.fromStatusCode(r.getStatus());
 //	}
-	
-	public Response.Status getURLResponseStatus(URL url) throws UriBuilderException {
-		Integer cached = urlCacheStatus.getIfPresent(url);
+
+	private static Cache<URL, Response> urlCacheStatus = CacheBuilder.newBuilder().maximumSize(10000).build();
+	public Response.Status getURLResponseStatus(URL url) {
+		Response cached = urlCacheStatus.getIfPresent(url);
 		if (cached!=null)
-			return Response.Status.fromStatusCode(cached);
+			return Response.Status.fromStatusCode(cached.getStatus());
 		
 		Response r = this.doHEAD(url);
-		urlCacheStatus.put(url, r.getStatus());
+		urlCacheStatus.put(url, r);
 		return Response.Status.fromStatusCode(r.getStatus());
+	}
+	public long getURLResponseContentLength(URL url) throws IOException {
+		Response cached = urlCacheStatus.getIfPresent(url);
+		if (cached==null){
+			Response r = this.doHEAD(url);
+			urlCacheStatus.put(url, r);
+			cached = r;
+		}
+		if(cached.getLength()!=-1)
+			return cached.getLength();
+		Response resource = this.doGET(url);
+		InputStream is = resource.readEntity(InputStream.class);
+		byte[] bytes = IOUtils.toByteArray(is);
+		return bytes.length;
 	}
 	
 	public boolean isOK(URL url) throws UriBuilderException{
 //		return this.is(new ArrayList<Response.Status>(){{add(Response.Status.OK);add(Response.Status.SEE_OTHER);add(Response.Status.MOVED_PERMANENTLY);}}, url);
-		return getURLResponseStatus(url).getStatusCode()<400;
+		Response.Status s = getURLResponseStatus(url);
+		return s!=null && s.getStatusCode()<400;
 	}
 	
 	public boolean is(final Response.Status status, URL url){
@@ -79,7 +97,8 @@ public class HTTPClient{
 	
 	public boolean is(List<Response.Status> status, URL url){
 		try {
-			return status.contains(getURLResponseStatus(url));
+			Response.Status s = getURLResponseStatus(url);
+			return s!=null && status.contains(s);
 		} catch (Exception e) {
 			return false;
 		}
