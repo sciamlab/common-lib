@@ -1,13 +1,15 @@
 package com.sciamlab.common.nlp;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 
 public class EurovocThesaurusEntry implements JSONString {
 	
-	enum Type{
+	public enum Type{
 		DOMAIN, MICRO_THESAURUS, CONCEPT; 
 	}
 	
@@ -44,6 +46,10 @@ public class EurovocThesaurusEntry implements JSONString {
 			this.code = code;
 			this.label = label;
 			this.uri = uri;
+		}
+		
+		public Builder(Type type, JSONObject json) throws JSONException, URISyntaxException{
+			this(type, json.getString("code"), json.getString("label"), new URI(json.getString("uri")));
 		}
 		
 		public EurovocThesaurusEntry build(){
