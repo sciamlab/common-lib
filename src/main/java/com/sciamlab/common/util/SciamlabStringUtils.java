@@ -122,7 +122,8 @@ public class SciamlabStringUtils {
 	
 	public static final Map<String, String> STOP_WORDS_EXTENDED = new LinkedHashMap<String, String>(){{
 		putAll(SciamlabStringUtils.STOP_WORDS_DEFAULT);
-		put("\n", ""); 
+		put("**", ""); 
+		put("\n", " "); 
 		put("\t", ""); 
 		put("°", "");
 		put("\\?", "");
