@@ -241,7 +241,7 @@ public class HTTPClient{
 				}
 			}
 		}
-		return b.post(Entity.entity(body, media_type));
+		return b.post(media_type!=null ? Entity.entity(body, media_type) : Entity.entity(body, header.getFirst("Content-type")));
 	}
 	
 	public Response doPUT(URL url, String body, MediaType media_type, MultivaluedMap<String, String> params, MultivaluedMap<String, String> header) {
